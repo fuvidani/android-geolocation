@@ -1,6 +1,6 @@
 package at.ac.tuwien.mnsa.geolocation.di
 
-import at.ac.tuwien.mnsa.geolocation.MainActivity
+import at.ac.tuwien.mnsa.geolocation.ui.MainActivity
 import dagger.Component
 import dagger.Module
 import javax.inject.Singleton

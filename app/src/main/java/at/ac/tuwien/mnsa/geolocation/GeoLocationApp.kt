@@ -4,6 +4,7 @@ import android.app.Application
 import at.ac.tuwien.mnsa.geolocation.di.AppModule
 import at.ac.tuwien.mnsa.geolocation.di.ApplicationComponent
 import at.ac.tuwien.mnsa.geolocation.di.DaggerApplicationComponent
+import io.realm.Realm
 
 /**
  * <h4>About this class</h4>
@@ -20,6 +21,7 @@ class GeoLocationApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        Realm.init(this)
         applicationComponent = DaggerApplicationComponent.builder().appModule(AppModule()).build()
     }
 
