@@ -5,6 +5,7 @@ import at.ac.tuwien.mnsa.geolocation.di.AppModule
 import at.ac.tuwien.mnsa.geolocation.di.ApplicationComponent
 import at.ac.tuwien.mnsa.geolocation.di.DaggerApplicationComponent
 import io.realm.Realm
+import timber.log.Timber
 
 /**
  * <h4>About this class</h4>
@@ -23,6 +24,9 @@ class GeoLocationApp : Application() {
         super.onCreate()
         Realm.init(this)
         applicationComponent = DaggerApplicationComponent.builder().appModule(AppModule()).build()
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
     }
 
     fun getApplicationComponent(): ApplicationComponent {
