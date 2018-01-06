@@ -30,6 +30,10 @@ class ReportsAdapter(
         data: OrderedRealmCollection<Report>?,
         autoUpdate: Boolean, private val context: Context) : RealmRecyclerViewAdapter<Report, ReportViewHolder>(data, autoUpdate) {
 
+    init {
+        setHasStableIds(true)
+    }
+
     override fun onBindViewHolder(holder: ReportViewHolder, position: Int) {
         val report = getItem(position)
         if (report != null) {
@@ -53,6 +57,14 @@ class ReportsAdapter(
         return ReportViewHolder(view)
     }
 
+    override fun getItemId(position: Int): Long {
+        val item = getItem(position)
+        if (item != null) {
+            return item.timestamp
+        }
+        Timber.e("getItem(position) returned null!!")
+        return 0L
+    }
 }
 
 class ReportViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {

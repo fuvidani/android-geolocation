@@ -5,7 +5,7 @@
   android:layout_height="wrap_content"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_gravity="center"
-  android:layout_marginBottom="@dimen/md_keylines"
+  android:layout_marginTop="@dimen/md_keylines"
   android:layout_marginLeft="@dimen/md_keylines"
   android:layout_marginRight="@dimen/md_keylines"
   app:cardElevation="@dimen/card_elevation_rest"

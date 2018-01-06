@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -58,8 +59,15 @@ class MainFragment : Fragment() {
 
     private fun setUpRecyclerView() {
         adapter = ReportsAdapter(realm?.where<Report>()?.sort("timestamp", Sort.DESCENDING)?.findAll(), true, context)
-        recyclerView.layoutManager = LinearLayoutManager(context)
+        val layoutManager = LinearLayoutManager(context)
+        recyclerView.layoutManager = layoutManager
         recyclerView.setHasFixedSize(true)
+        adapter?.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                super.onItemRangeInserted(positionStart, itemCount)
+                layoutManager.smoothScrollToPosition(recyclerView, null, 0)
+            }
+        })
         recyclerView.adapter = adapter
     }
 
@@ -77,7 +85,7 @@ class MainFragment : Fragment() {
                     Realm.getInstance(Utils.getNormalRealmConfig()).use {
                         it.executeTransaction { realm ->
                             val report = Report()
-                            report.timestamp = System.currentTimeMillis()
+                            report.timestamp = 1515256840172
                             report.actualLatitude = 48.1739176
                             report.actualLongitude = 16.3786159
                             realm.copyToRealmOrUpdate(report)
