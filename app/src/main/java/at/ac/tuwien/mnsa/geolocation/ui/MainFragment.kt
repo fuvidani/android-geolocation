@@ -11,7 +11,10 @@ import android.view.ViewGroup
 import at.ac.tuwien.mnsa.geolocation.R
 import at.ac.tuwien.mnsa.geolocation.Utils
 import at.ac.tuwien.mnsa.geolocation.dto.Report
+import com.jakewharton.rxbinding2.view.RxView
+import com.trello.rxlifecycle2.kotlin.bindToLifecycle
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.realm.Realm
 import io.realm.Sort
@@ -44,12 +47,12 @@ class MainFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_main, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpToolbar()
         realm = (activity as MainActivity).realm
         setUpRecyclerView()
-        addAndDeleteDummyReport()
+        observeFabClicks(view)
     }
 
     private fun setUpToolbar() {
@@ -74,6 +77,38 @@ class MainFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         recyclerView.adapter = null
+    }
+
+    private fun observeFabClicks(view: View) {
+        RxView.clicks(fab_add_report)
+                .throttleFirst(1, TimeUnit.SECONDS)
+                .bindToLifecycle(view)
+                .map {
+                    progressBar.visibility = View.VISIBLE
+                    fab_add_report.hide()
+                }
+                .switchMap {
+                    Observable
+                            .timer(3000, TimeUnit.MILLISECONDS)
+                            .bindToLifecycle(view)
+                            .map {
+                                Realm.getInstance(Utils.getNormalRealmConfig()).use {
+                                    it.executeTransaction { realm ->
+                                        val report = Report()
+                                        report.timestamp = System.currentTimeMillis()
+                                        report.actualLatitude = 47.5149429
+                                        report.actualLongitude = 19.0778626
+                                        realm.copyToRealmOrUpdate(report)
+                                    }
+                                }
+                            }
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .map {
+                                progressBar.visibility = View.GONE
+                                fab_add_report.show()
+                            }
+                }
+                .subscribe()
     }
 
     // TODO delete this if not necessary anymore
@@ -138,16 +173,5 @@ class MainFragment : Fragment() {
                     }
                 }
                 .subscribe()
-        /*Observable
-                .timer(15000, TimeUnit.MILLISECONDS)
-                .subscribeOn(Schedulers.io())
-                .map {
-                    Realm.getInstance(Utils.getNormalRealmConfig()).use {
-                        it.executeTransaction { realm ->
-                            realm.delete(Report::class.java)
-                        }
-                    }
-                }
-                .subscribe()*/
     }
 }
