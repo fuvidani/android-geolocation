@@ -4,6 +4,7 @@
   <string name="title_dashboard">Dashboard</string>
   <string name="title_notifications">Notifications</string>
   <string name="overview_title">History</string>
+  <string name="details_title">Report details</string>
   <string name="details_button">Details</string>
   <string name="actual_location">%1$s / %2$s</string>
   <string name="dialog_required_permission_title">Required permissions</string>

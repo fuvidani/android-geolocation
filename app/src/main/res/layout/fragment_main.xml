@@ -51,6 +51,8 @@
     android:layout_margin="@dimen/fab_margin"
     app:srcCompat="@drawable/ic_add_white_24dp"
     app:fabSize="normal"
+    android:clickable="true"
+    android:focusable="true"
     app:layout_anchor="@id/linearLayout"
     app:layout_anchorGravity="bottom|right|end" />
 </android.support.design.widget.CoordinatorLayout>

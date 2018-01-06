@@ -21,8 +21,18 @@ class Utils {
             return RealmConfiguration.Builder().deleteRealmIfMigrationNeeded().build()
         }
 
-        fun replaceFragmentInActivity(fragmentManager: FragmentManager, fragment: Fragment, frameId: Int) {
+        fun replaceFragmentInActivity(fragmentManager: FragmentManager, fragment: Fragment, frameId: Int, addToBackStack: Boolean, animation: Boolean) {
             val transaction = fragmentManager.beginTransaction()
+            if (animation) {
+                transaction.setCustomAnimations(
+                        android.R.animator.fade_in,
+                        android.R.animator.fade_out,
+                        android.R.animator.fade_in,
+                        android.R.animator.fade_out)
+            }
+            if (addToBackStack) {
+                transaction.addToBackStack(null)
+            }
             transaction.replace(frameId, fragment)
             transaction.commit()
         }

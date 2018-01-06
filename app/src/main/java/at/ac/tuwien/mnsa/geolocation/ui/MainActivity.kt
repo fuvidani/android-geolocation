@@ -16,7 +16,6 @@ import io.realm.Realm
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import timber.log.Timber
 
 
 class MainActivity : AppCompatActivity() {
@@ -37,7 +36,7 @@ class MainActivity : AppCompatActivity() {
     private fun setUpViewFragment() {
         val mainFragment: MainFragment? = supportFragmentManager.findFragmentById(R.id.contentFrame) as MainFragment?
         if (mainFragment == null) {
-            Utils.replaceFragmentInActivity(supportFragmentManager, MainFragment.newInstance(), R.id.contentFrame)
+            Utils.replaceFragmentInActivity(supportFragmentManager, MainFragment.newInstance(), R.id.contentFrame, false, false)
         }
     }
 
@@ -80,8 +79,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
     fun onEvent(reportClick: ReportDetailClickEvent) {
-        Timber.d("Click on report (ID: ${reportClick.reportId}")
+        val bundle = Bundle()
+        bundle.putLong("reportId", reportClick.reportId)
+        val fragment = DetailViewFragment.newInstance()
+        fragment.arguments = bundle
+        Utils.replaceFragmentInActivity(supportFragmentManager, fragment, R.id.contentFrame, true, true)
     }
 
     private fun displayRequiredPermissionsDialog() {
@@ -92,6 +96,14 @@ class MainActivity : AppCompatActivity() {
                 .setCancelable(false)
                 .create()
         alertDialog?.show()
+    }
+
+    override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount > 0) {
+            supportFragmentManager.popBackStack()
+        } else {
+            finish()
+        }
     }
 
     override fun onStop() {

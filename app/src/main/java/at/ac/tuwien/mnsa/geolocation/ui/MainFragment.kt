@@ -61,7 +61,9 @@ class MainFragment : Fragment() {
     }
 
     private fun setUpRecyclerView() {
-        adapter = ReportsAdapter(realm.where<Report>().sort("timestamp", Sort.DESCENDING)?.findAll(), true, context)
+        adapter = ReportsAdapter(realm.where<Report>()
+                .sort("timestamp", Sort.DESCENDING)
+                .findAll(), true, context)
         val layoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = layoutManager
         recyclerView.setHasFixedSize(true)
