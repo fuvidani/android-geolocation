@@ -31,8 +31,8 @@ import java.util.concurrent.TimeUnit
  */
 class MainFragment : Fragment() {
 
-    private var adapter: ReportsAdapter? = null
-    private var realm: Realm? = null
+    private lateinit var adapter: ReportsAdapter
+    private lateinit var realm: Realm
 
     companion object {
         fun newInstance(): MainFragment {
@@ -58,11 +58,11 @@ class MainFragment : Fragment() {
     }
 
     private fun setUpRecyclerView() {
-        adapter = ReportsAdapter(realm?.where<Report>()?.sort("timestamp", Sort.DESCENDING)?.findAll(), true, context)
+        adapter = ReportsAdapter(realm.where<Report>().sort("timestamp", Sort.DESCENDING)?.findAll(), true, context)
         val layoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = layoutManager
         recyclerView.setHasFixedSize(true)
-        adapter?.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+        adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                 super.onItemRangeInserted(positionStart, itemCount)
                 layoutManager.smoothScrollToPosition(recyclerView, null, 0)
@@ -85,7 +85,7 @@ class MainFragment : Fragment() {
                     Realm.getInstance(Utils.getNormalRealmConfig()).use {
                         it.executeTransaction { realm ->
                             val report = Report()
-                            report.timestamp = 1515256840172
+                            report.timestamp = 1515257304331
                             report.actualLatitude = 48.1739176
                             report.actualLongitude = 16.3786159
                             realm.copyToRealmOrUpdate(report)
@@ -100,15 +100,45 @@ class MainFragment : Fragment() {
                     Realm.getInstance(Utils.getNormalRealmConfig()).use {
                         it.executeTransaction { realm ->
                             val report = Report()
-                            report.timestamp = System.currentTimeMillis()
-                            report.actualLatitude = 48.1739176
-                            report.actualLongitude = 16.3786159
+                            report.timestamp = 1515257314945
+                            report.actualLatitude = 48.2089816
+                            report.actualLongitude = 16.3732133
                             realm.copyToRealmOrUpdate(report)
                         }
                     }
                 }
                 .subscribe()
         Observable
+                .timer(6000, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.io())
+                .map {
+                    Realm.getInstance(Utils.getNormalRealmConfig()).use {
+                        it.executeTransaction { realm ->
+                            val report = Report()
+                            report.timestamp = 1515257321911
+                            report.actualLatitude = 40.758895
+                            report.actualLongitude = -73.985131
+                            realm.copyToRealmOrUpdate(report)
+                        }
+                    }
+                }
+                .subscribe()
+        Observable
+                .timer(8000, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.io())
+                .map {
+                    Realm.getInstance(Utils.getNormalRealmConfig()).use {
+                        it.executeTransaction { realm ->
+                            val report = Report()
+                            report.timestamp = 1515257329775
+                            report.actualLatitude = 51.508039
+                            report.actualLongitude = -0.128069
+                            realm.copyToRealmOrUpdate(report)
+                        }
+                    }
+                }
+                .subscribe()
+        /*Observable
                 .timer(15000, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.io())
                 .map {
@@ -118,6 +148,6 @@ class MainFragment : Fragment() {
                         }
                     }
                 }
-                .subscribe()
+                .subscribe()*/
     }
 }
