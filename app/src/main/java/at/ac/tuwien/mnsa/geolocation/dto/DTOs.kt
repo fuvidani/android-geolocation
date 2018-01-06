@@ -77,3 +77,5 @@ open class Report(
 open class LocationServiceKey(
         var key: String = "test"
 ) : RealmObject()
+
+data class ReportDetailClickEvent(val reportId: Long)

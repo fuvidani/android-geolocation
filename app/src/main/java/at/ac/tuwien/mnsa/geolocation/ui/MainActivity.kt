@@ -6,36 +6,26 @@ import at.ac.tuwien.mnsa.geolocation.GeoLocationApp
 import at.ac.tuwien.mnsa.geolocation.R
 import at.ac.tuwien.mnsa.geolocation.Utils
 import at.ac.tuwien.mnsa.geolocation.di.ApplicationComponent
-import at.ac.tuwien.mnsa.geolocation.dto.Report
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
+import at.ac.tuwien.mnsa.geolocation.dto.ReportDetailClickEvent
 import io.realm.Realm
-import io.realm.kotlin.where
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
 
 
 class MainActivity : AppCompatActivity() {
 
-    private val disposables: CompositeDisposable = CompositeDisposable()
     private lateinit var applicationComponent: ApplicationComponent
-    private lateinit var realm: Realm
+    lateinit var realm: Realm
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         applicationComponent = (application as GeoLocationApp).getApplicationComponent()
         realm = Realm.getInstance(Utils.getNormalRealmConfig())
+        EventBus.getDefault().register(this)
         setUpViewFragment()
-        disposables.add(
-                realm.where<Report>()
-                        .findAllAsync()
-                        .asFlowable()
-                        .filter({ r -> r.isLoaded })
-                        .subscribeOn(AndroidSchedulers.mainThread())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe({ results -> Timber.e("Results here. Size: ${results.size}") },
-                                { e -> Timber.e("Error:$e") },
-                                { Timber.e("Completed") }))
     }
 
     private fun setUpViewFragment() {
@@ -49,9 +39,14 @@ class MainActivity : AppCompatActivity() {
         return applicationComponent
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(reportClick: ReportDetailClickEvent) {
+        Timber.d("Click on report (ID: ${reportClick.reportId}")
+    }
+
     override fun onDestroy() {
         super.onDestroy()
-        disposables.dispose()
         realm.close()
+        EventBus.getDefault().unregister(this)
     }
 }
