@@ -6,4 +6,7 @@
   <string name="overview_title">History</string>
   <string name="details_button">Details</string>
   <string name="actual_location">%1$s / %2$s</string>
+  <string name="dialog_required_permission_title">Required permissions</string>
+  <string name="dialog_required_permission_message">In order to deliver a supreme user-experience, the application needs to have access to your location.</string>
+  <string name="dialog_required_permission_ok">Ok</string>
 </resources>

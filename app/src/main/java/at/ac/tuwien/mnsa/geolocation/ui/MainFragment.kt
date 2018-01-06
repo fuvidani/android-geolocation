@@ -13,6 +13,7 @@ import at.ac.tuwien.mnsa.geolocation.dto.Report
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import io.realm.Realm
+import io.realm.Sort
 import io.realm.kotlin.where
 import kotlinx.android.synthetic.main.fragment_main.*
 import java.util.concurrent.TimeUnit
@@ -56,15 +57,36 @@ class MainFragment : Fragment() {
     }
 
     private fun setUpRecyclerView() {
+        adapter = ReportsAdapter(realm?.where<Report>()?.sort("timestamp", Sort.DESCENDING)?.findAll(), true, context)
         recyclerView.layoutManager = LinearLayoutManager(context)
-        adapter = ReportsAdapter(realm?.where<Report>()?.findAll(), true, context)
+        recyclerView.setHasFixedSize(true)
         recyclerView.adapter = adapter
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        recyclerView.adapter = null
     }
 
     // TODO delete this if not necessary anymore
     private fun addAndDeleteDummyReport() {
         Observable
-                .timer(5000, TimeUnit.MILLISECONDS)
+                .timer(2000, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.io())
+                .map {
+                    Realm.getInstance(Utils.getNormalRealmConfig()).use {
+                        it.executeTransaction { realm ->
+                            val report = Report()
+                            report.timestamp = System.currentTimeMillis()
+                            report.actualLatitude = 48.1739176
+                            report.actualLongitude = 16.3786159
+                            realm.copyToRealmOrUpdate(report)
+                        }
+                    }
+                }
+                .subscribe()
+        Observable
+                .timer(4000, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.io())
                 .map {
                     Realm.getInstance(Utils.getNormalRealmConfig()).use {

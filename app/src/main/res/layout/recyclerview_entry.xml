@@ -47,6 +47,7 @@
       android:layout_below="@id/cardTitle"
       android:padding="8dp"
       android:gravity="center_vertical"
+      android:drawableStart="@drawable/ic_location_on_black_24dp"
       tools:text="15/16" />
 
     <android.support.v7.widget.AppCompatButton

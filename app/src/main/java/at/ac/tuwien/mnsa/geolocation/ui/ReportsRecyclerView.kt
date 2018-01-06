@@ -43,7 +43,7 @@ class ReportsAdapter(
             holder.itemView.measurementLocationTv.text = String.format(context.getString(R.string.actual_location), report.actualLatitude, report.actualLongitude)
             val cal = Calendar.getInstance(Locale.ENGLISH)
             cal.timeInMillis = report.timestamp
-            val formattedDate = DateFormat.format("dd MMMM yyyy", cal).toString()
+            val formattedDate = DateFormat.format("dd. MMMM yyyy HH:mm:ss", cal).toString()
             holder.itemView.cardTitle.text = formattedDate
         }
     }

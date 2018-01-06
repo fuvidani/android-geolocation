@@ -26,5 +26,13 @@ class Utils {
             transaction.replace(frameId, fragment)
             transaction.commit()
         }
+
+        fun fineLocationAccessCode(): Int {
+            return 42
+        }
+
+        fun coarseLocationAccessCode(): Int {
+            return 43
+        }
     }
 }
