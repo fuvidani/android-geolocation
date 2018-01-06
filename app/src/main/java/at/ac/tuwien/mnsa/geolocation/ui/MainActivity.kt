@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         applicationComponent = (application as GeoLocationApp).getApplicationComponent()
         realm = Realm.getInstance(Utils.getNormalRealmConfig())
+        setUpViewFragment()
         disposables.add(
                 realm.where<Report>()
                         .findAllAsync()
@@ -35,6 +36,13 @@ class MainActivity : AppCompatActivity() {
                         .subscribe({ results -> Timber.e("Results here. Size: ${results.size}") },
                                 { e -> Timber.e("Error:$e") },
                                 { Timber.e("Completed") }))
+    }
+
+    private fun setUpViewFragment() {
+        val mainFragment: MainFragment? = supportFragmentManager.findFragmentById(R.id.contentFrame) as MainFragment?
+        if (mainFragment == null) {
+            Utils.replaceFragmentInActivity(supportFragmentManager, MainFragment.newInstance(), R.id.contentFrame)
+        }
     }
 
     fun getComponent(): ApplicationComponent {
