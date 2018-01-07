@@ -45,8 +45,8 @@
         android:layout_height="?attr/actionBarSize"
         android:minHeight="?attr/actionBarSize"
         app:layout_collapseMode="pin"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        android:theme="@style/AppTheme.AppBarOverlay" />
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
     </android.support.design.widget.CollapsingToolbarLayout>
   </android.support.design.widget.AppBarLayout>
 
@@ -72,17 +72,24 @@
 
       </android.support.v7.widget.RecyclerView>
 
+      <android.support.v7.widget.AppCompatButton
+        android:id="@+id/deleteReportButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        app:backgroundTint="@color/colorAccent"
+        android:text="@string/delete_report" />
     </LinearLayout>
 
   </android.support.v4.widget.NestedScrollView>
 
 
   <android.support.design.widget.FloatingActionButton
-    android:id="@+id/fab_add_report"
+    android:id="@+id/fab_send_report"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/fab_margin"
-    app:srcCompat="@drawable/ic_add_white_24dp"
+    app:srcCompat="@drawable/ic_send_white_24dp"
     android:clickable="true"
     android:focusable="true"
     app:fabSize="normal"

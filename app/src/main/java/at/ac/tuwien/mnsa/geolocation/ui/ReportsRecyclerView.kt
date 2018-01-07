@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import at.ac.tuwien.mnsa.geolocation.R
+import at.ac.tuwien.mnsa.geolocation.Utils
 import at.ac.tuwien.mnsa.geolocation.dto.Report
 import at.ac.tuwien.mnsa.geolocation.dto.ReportDetailClickEvent
 import com.squareup.picasso.Picasso
@@ -39,7 +40,7 @@ class ReportsAdapter(
         if (report != null) {
             Picasso
                     .with(context)
-                    .load("https://maps.googleapis.com/maps/api/streetview?size=600x300&location=${report.actualLatitude},${report.actualLongitude}&fov=90")
+                    .load(Utils.getStreetViewUrl(600, 300, report.actualLatitude, report.actualLongitude))
                     .placeholder(R.drawable.default_placeholder)
                     .error(R.drawable.default_placeholder)
                     .into(holder.itemView.cardImage)

@@ -9,5 +9,11 @@
   <string name="actual_location">%1$s / %2$s</string>
   <string name="dialog_required_permission_title">Required permissions</string>
   <string name="dialog_required_permission_message">In order to deliver a supreme user-experience, the application needs to have access to your location.</string>
-  <string name="dialog_required_permission_ok">Ok</string>
+  <string name="dialog_required_permission_ok">OK</string>
+  <string name="menu_settings_change_key">Settings</string>
+  <string name="delete_report">Delete Report</string>
+  <string name="dialog_delete_title">Confirm delete</string>
+  <string name="dialog_delete_message">Delete this report? Deleted reports can\'t be retrieved.</string>
+  <string name="dialog_delete_positive">Delete</string>
+  <string name="dialog_delete_negative">Cancel</string>
 </resources>

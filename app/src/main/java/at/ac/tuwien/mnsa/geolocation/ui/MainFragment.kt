@@ -5,9 +5,7 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import at.ac.tuwien.mnsa.geolocation.R
 import at.ac.tuwien.mnsa.geolocation.Utils
 import at.ac.tuwien.mnsa.geolocation.dto.Report
@@ -15,7 +13,6 @@ import com.jakewharton.rxbinding2.view.RxView
 import com.trello.rxlifecycle2.kotlin.bindToLifecycle
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import io.realm.Realm
 import io.realm.Sort
 import io.realm.kotlin.where
@@ -44,7 +41,9 @@ class MainFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_main, container, false)
+        val view = inflater.inflate(R.layout.fragment_main, container, false)
+        setHasOptionsMenu(true)
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -53,6 +52,10 @@ class MainFragment : Fragment() {
         realm = (activity as MainActivity).realm
         setUpRecyclerView()
         observeFabClicks(view)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(R.menu.options_menu_main, menu)
     }
 
     private fun setUpToolbar() {
@@ -109,70 +112,6 @@ class MainFragment : Fragment() {
                                 progressBar.visibility = View.GONE
                                 fab_add_report.show()
                             }
-                }
-                .subscribe()
-    }
-
-    // TODO delete this if not necessary anymore
-    private fun addAndDeleteDummyReport() {
-        Observable
-                .timer(2000, TimeUnit.MILLISECONDS)
-                .subscribeOn(Schedulers.io())
-                .map {
-                    Realm.getInstance(Utils.getNormalRealmConfig()).use {
-                        it.executeTransaction { realm ->
-                            val report = Report()
-                            report.timestamp = 1515257304331
-                            report.actualLatitude = 48.1739176
-                            report.actualLongitude = 16.3786159
-                            realm.copyToRealmOrUpdate(report)
-                        }
-                    }
-                }
-                .subscribe()
-        Observable
-                .timer(4000, TimeUnit.MILLISECONDS)
-                .subscribeOn(Schedulers.io())
-                .map {
-                    Realm.getInstance(Utils.getNormalRealmConfig()).use {
-                        it.executeTransaction { realm ->
-                            val report = Report()
-                            report.timestamp = 1515257314945
-                            report.actualLatitude = 48.2089816
-                            report.actualLongitude = 16.3732133
-                            realm.copyToRealmOrUpdate(report)
-                        }
-                    }
-                }
-                .subscribe()
-        Observable
-                .timer(6000, TimeUnit.MILLISECONDS)
-                .subscribeOn(Schedulers.io())
-                .map {
-                    Realm.getInstance(Utils.getNormalRealmConfig()).use {
-                        it.executeTransaction { realm ->
-                            val report = Report()
-                            report.timestamp = 1515257321911
-                            report.actualLatitude = 40.758895
-                            report.actualLongitude = -73.985131
-                            realm.copyToRealmOrUpdate(report)
-                        }
-                    }
-                }
-                .subscribe()
-        Observable
-                .timer(8000, TimeUnit.MILLISECONDS)
-                .subscribeOn(Schedulers.io())
-                .map {
-                    Realm.getInstance(Utils.getNormalRealmConfig()).use {
-                        it.executeTransaction { realm ->
-                            val report = Report()
-                            report.timestamp = 1515257329775
-                            report.actualLatitude = 51.508039
-                            report.actualLongitude = -0.128069
-                            realm.copyToRealmOrUpdate(report)
-                        }
-                    }
                 }
                 .subscribe()
     }

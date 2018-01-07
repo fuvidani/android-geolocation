@@ -44,5 +44,9 @@ class Utils {
         fun coarseLocationAccessCode(): Int {
             return 43
         }
+
+        fun getStreetViewUrl(width: Int, height: Int, lat: Double, lon: Double): String {
+            return "https://maps.googleapis.com/maps/api/streetview?size=${width}x$height&location=$lat,$lon&fov=90"
+        }
     }
 }
