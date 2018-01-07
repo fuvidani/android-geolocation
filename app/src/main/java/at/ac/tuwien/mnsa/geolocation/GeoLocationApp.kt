@@ -23,7 +23,7 @@ class GeoLocationApp : Application() {
     override fun onCreate() {
         super.onCreate()
         Realm.init(this)
-        applicationComponent = DaggerApplicationComponent.builder().appModule(AppModule()).build()
+        applicationComponent = DaggerApplicationComponent.builder().appModule(AppModule(this)).build()
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }

@@ -1,5 +1,6 @@
 package at.ac.tuwien.mnsa.geolocation.di
 
+import at.ac.tuwien.mnsa.geolocation.service.ReportService
 import at.ac.tuwien.mnsa.geolocation.ui.MainActivity
 import dagger.Component
 import dagger.Module
@@ -15,11 +16,10 @@ import javax.inject.Singleton
  * @version 0.1.0
  */
 @Singleton
-@Component(modules = [(AppModule::class)])
+@Component(modules = [(AppModule::class),(ServiceModule::class),(PersistenceModule::class)])
 interface ApplicationComponent {
 
     fun inject(mainActivity: MainActivity)
-}
 
-@Module
-open class AppModule
+    fun inject(reportService: ReportService)
+}

@@ -31,6 +31,7 @@ ext {
     architectureComponentsVersion = "1.0.0"
     retrofitVersion = '2.3.0'
     okHttpVersion = '3.4.1'
+    playServicesVersion = '11.6.2'
     daggerVersion = '2.11'
     butterKnifeVersion = '8.8.1'
     rxJavaVersion = '2.1.2'
