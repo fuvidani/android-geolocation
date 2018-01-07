@@ -28,6 +28,8 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.util.concurrent.TimeUnit
+import android.content.Intent
+import at.ac.tuwien.mnsa.geolocation.service.ReportService
 
 
 /**
@@ -62,7 +64,8 @@ class MainFragment : Fragment() {
         setUpToolbar()
         fab_add_report.show()
         setUpRecyclerView()
-        observeFabClicks(view)
+//        observeFabClicks(view)
+        initButton(view)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -99,6 +102,21 @@ class MainFragment : Fragment() {
         EventBus.getDefault().unregister(this)
         alertDialog?.dismiss()
         disposable?.dispose()
+    }
+
+    private fun generateReport() {
+        val intent = Intent(activity, ReportService::class.java)
+        activity.startService(intent)
+    }
+
+    private fun initButton(view: View) {
+        RxView.clicks(fab_add_report)
+                .throttleFirst(1, TimeUnit.SECONDS)
+                .bindToLifecycle(view)
+                .map {
+                    generateReport()
+                }
+                .subscribe()
     }
 
     private fun observeFabClicks(view: View) {

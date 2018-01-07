@@ -7,6 +7,7 @@ apply plugin: 'realm-android'
 android {
     compileSdkVersion 26
     defaultConfig {
+        multiDexEnabled true
         applicationId "at.ac.tuwien.mnsa.geolocation"
         minSdkVersion 19
         targetSdkVersion 26
@@ -20,6 +21,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
     }
 }
 
@@ -68,9 +73,15 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'org.greenrobot:eventbus:3.1.1'
 
+    /*****************  Google Play    *****************/
+    implementation "com.google.android.gms:play-services-location:$rootProject.playServicesVersion"
+
     // Test helpers for Room
     testImplementation "android.arch.persistence.room:testing:1.0.0"
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.1'
+    compile "com.squareup.retrofit2:converter-jackson:2.1.0"
 }
