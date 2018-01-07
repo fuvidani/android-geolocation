@@ -1,6 +1,7 @@
 package at.ac.tuwien.mnsa.geolocation.persistence;
 
 import android.content.Context;
+import android.location.Location;
 import at.ac.tuwien.mnsa.geolocation.Utils;
 import at.ac.tuwien.mnsa.geolocation.dto.AccessPointMeasurement;
 import at.ac.tuwien.mnsa.geolocation.dto.CellTowerMeasurement;
@@ -76,6 +77,11 @@ public class PersistenceManager {
 
         report.setPointMeasurements(accessPointMeasurements);
         report.setTowerMeasurements(cellTowerMeasurements);
+
+        Location mlsLocation = new Location("");//provider name is unnecessary
+        mlsLocation.setLatitude(reportTemplate.getMlsLocationInformation().getResponse().location.lat);
+        mlsLocation.setLongitude(reportTemplate.getMlsLocationInformation().getResponse().location.lng);
+        report.setAccuracyDifference(reportTemplate.getGpsLocationInformation().distanceTo(mlsLocation));
 
         r.copyToRealmOrUpdate(report);
       });
