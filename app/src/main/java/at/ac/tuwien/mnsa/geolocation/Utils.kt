@@ -3,7 +3,9 @@ package at.ac.tuwien.mnsa.geolocation
 
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
+import android.text.format.DateFormat
 import io.realm.RealmConfiguration
+import java.util.*
 
 /**
  * <h4>About this class</h4>
@@ -47,6 +49,12 @@ class Utils {
 
         fun getStreetViewUrl(width: Int, height: Int, lat: Double, lon: Double): String {
             return "https://maps.googleapis.com/maps/api/streetview?size=${width}x$height&location=$lat,$lon&fov=90"
+        }
+
+        fun toReadableFormat(timestamp: Long): String {
+            val cal = Calendar.getInstance(Locale.ENGLISH)
+            cal.timeInMillis = timestamp
+            return DateFormat.format("dd. MMMM yyyy HH:mm:ss", cal).toString()
         }
     }
 }

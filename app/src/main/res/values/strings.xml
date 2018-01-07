@@ -6,7 +6,7 @@
   <string name="overview_title">History</string>
   <string name="details_title">Report details</string>
   <string name="details_button">Details</string>
-  <string name="actual_location">%1$s / %2$s</string>
+  <string name="location_formatted">%1$s / %2$s (%3$s m)</string>
   <string name="dialog_required_permission_title">Required permissions</string>
   <string name="dialog_required_permission_message">In order to deliver a supreme user-experience, the application needs to have access to your location.</string>
   <string name="dialog_required_permission_ok">OK</string>
@@ -19,4 +19,12 @@
   <string name="new_report_snackbar_msg">New report generated</string>
   <string name="new_report_snackbar_action">View</string>
   <string name="overview_card_text">Successful geolocation with a difference of %1$s meters in accuracy.</string>
+  <string name="key_info_tv">Key Information</string>
+  <string name="cell_towers_tv">Cell Towers</string>
+  <string name="access_points_tv">WiFi Access Points</string>
+  <string name="detail_subscript_time">Time</string>
+  <string name="detail_subscript_actual_location">GPS location</string>
+  <string name="detail_subscript_measured_location">Measured geolocation</string>
+  <string name="detail_subscript_acc_diff">Accuracy difference</string>
+  <string name="accuracy_difference">%1$s m</string>
 </resources>

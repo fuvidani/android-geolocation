@@ -2,7 +2,6 @@ package at.ac.tuwien.mnsa.geolocation.ui
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
-import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +16,6 @@ import io.realm.RealmRecyclerViewAdapter
 import kotlinx.android.synthetic.main.recyclerview_entry.view.*
 import org.greenrobot.eventbus.EventBus
 import timber.log.Timber
-import java.util.*
 
 /**
  * <h4>About this class</h4>
@@ -49,10 +47,7 @@ class ReportsAdapter(
             holder.itemView.details_button.setOnClickListener { EventBus.getDefault().post(ReportDetailClickEvent(report.timestamp)) }
             holder.itemView.delete_button.setOnClickListener { EventBus.getDefault().post(ReportDeleteClickEvent(report.timestamp)) }
             holder.itemView.measurementAccuracyDifferenceTv.text = String.format(context.getString(R.string.overview_card_text), report.accuracyDifference.toString())
-            val cal = Calendar.getInstance(Locale.ENGLISH)
-            cal.timeInMillis = report.timestamp
-            val formattedDate = DateFormat.format("dd. MMMM yyyy HH:mm:ss", cal).toString()
-            holder.itemView.cardTitle.text = formattedDate
+            holder.itemView.cardTitle.text = Utils.toReadableFormat(report.timestamp)
         }
     }
 
