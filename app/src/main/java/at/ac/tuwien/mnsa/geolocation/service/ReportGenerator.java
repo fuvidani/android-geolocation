@@ -5,9 +5,9 @@ import android.net.wifi.ScanResult;
 import at.ac.tuwien.mnsa.geolocation.dto.CellTower;
 import at.ac.tuwien.mnsa.geolocation.dto.MLSLocationInformation;
 import at.ac.tuwien.mnsa.geolocation.dto.NetworkInformation;
+import at.ac.tuwien.mnsa.geolocation.dto.ReportTemplate;
 import at.ac.tuwien.mnsa.geolocation.dto.mls.RemoteMLSCellTower;
 import at.ac.tuwien.mnsa.geolocation.dto.mls.RemoteMLSRequest;
-import at.ac.tuwien.mnsa.geolocation.dto.ReportTemplate;
 import at.ac.tuwien.mnsa.geolocation.dto.mls.RemoteMLSWifi;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
@@ -74,6 +74,7 @@ public class ReportGenerator {
         RemoteMLSWifi mlsWifi = new RemoteMLSWifi();
         mlsWifi.macAddress = wifi.BSSID;
         mlsWifi.signalStrength = wifi.level;
+        mlsWifi.frequency = wifi.frequency;
 
         wifiAccessPoints.add(mlsWifi);
       }

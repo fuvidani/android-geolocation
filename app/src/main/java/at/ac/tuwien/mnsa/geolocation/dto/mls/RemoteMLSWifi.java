@@ -14,4 +14,5 @@ package at.ac.tuwien.mnsa.geolocation.dto.mls;
 public class RemoteMLSWifi {
   public String macAddress;
   public long signalStrength;
+  public long frequency;
 }
