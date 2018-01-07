@@ -13,6 +13,7 @@ import at.ac.tuwien.mnsa.geolocation.Utils
 import at.ac.tuwien.mnsa.geolocation.dto.Report
 import at.ac.tuwien.mnsa.geolocation.dto.ReportDeleteClickEvent
 import at.ac.tuwien.mnsa.geolocation.dto.ReportDetailClickEvent
+import at.ac.tuwien.mnsa.geolocation.ui.recyclerviews.ReportsAdapter
 import com.jakewharton.rxbinding2.view.RxView
 import com.trello.rxlifecycle2.kotlin.bindToLifecycle
 import io.reactivex.Observable

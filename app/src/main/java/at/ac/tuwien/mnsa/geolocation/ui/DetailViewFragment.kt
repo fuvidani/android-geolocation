@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.Toolbar
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -12,6 +13,8 @@ import android.view.ViewGroup
 import at.ac.tuwien.mnsa.geolocation.R
 import at.ac.tuwien.mnsa.geolocation.Utils
 import at.ac.tuwien.mnsa.geolocation.dto.Report
+import at.ac.tuwien.mnsa.geolocation.ui.recyclerviews.AccessPointsAdapter
+import at.ac.tuwien.mnsa.geolocation.ui.recyclerviews.CellTowersAdapter
 import com.squareup.picasso.Picasso
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -86,6 +89,20 @@ class DetailViewFragment : Fragment() {
         report_gsp_location_tv.text = String.format(getString(R.string.location_formatted), report.actualLatitude, report.actualLongitude, report.gspAccuracy)
         report_measured_location_tv.text = String.format(getString(R.string.location_formatted), report.assumedLatitude, report.assumedLongitude, report.assumedAccuracy)
         report_acc_diff_tv.text = String.format(getString(R.string.accuracy_difference), report.accuracyDifference)
+        setUpTowerRecyclerView()
+        setUpAccessPointsRecyclerView()
+    }
+
+    private fun setUpTowerRecyclerView() {
+        towersRecyclerView.layoutManager = LinearLayoutManager(context)
+        towersRecyclerView.setHasFixedSize(true)
+        towersRecyclerView.adapter = CellTowersAdapter(context, report.towerMeasurements)
+    }
+
+    private fun setUpAccessPointsRecyclerView() {
+        accessPointsRecyclerView.layoutManager = LinearLayoutManager(context)
+        accessPointsRecyclerView.setHasFixedSize(true)
+        accessPointsRecyclerView.adapter = AccessPointsAdapter(context, report.pointMeasurements)
     }
 
     private fun onSendReport(view: View) {

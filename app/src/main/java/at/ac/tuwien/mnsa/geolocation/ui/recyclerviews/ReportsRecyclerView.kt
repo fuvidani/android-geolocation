@@ -1,4 +1,4 @@
-package at.ac.tuwien.mnsa.geolocation.ui
+package at.ac.tuwien.mnsa.geolocation.ui.recyclerviews
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
