@@ -49,6 +49,7 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpToolbar()
+        fab_add_report.show()
         realm = (activity as MainActivity).realm
         setUpRecyclerView()
         observeFabClicks(view)
@@ -81,6 +82,7 @@ class MainFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        fab_add_report.hide()
         recyclerView.adapter = null
     }
 

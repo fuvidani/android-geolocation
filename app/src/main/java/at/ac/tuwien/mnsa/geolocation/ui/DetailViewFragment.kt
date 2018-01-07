@@ -56,6 +56,7 @@ class DetailViewFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_detail_view, container, false)
+        setHasOptionsMenu(true)
         setUpToolbar(view)
         return view
     }

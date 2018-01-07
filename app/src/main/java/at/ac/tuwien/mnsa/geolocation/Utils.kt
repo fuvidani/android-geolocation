@@ -25,10 +25,10 @@ class Utils {
             val transaction = fragmentManager.beginTransaction()
             if (animation) {
                 transaction.setCustomAnimations(
-                        android.R.animator.fade_in,
-                        android.R.animator.fade_out,
-                        android.R.animator.fade_in,
-                        android.R.animator.fade_out)
+                        R.anim.enter_from_right,
+                        R.anim.exit_to_left,
+                        R.anim.enter_from_left,
+                        R.anim.exit_to_right)
             }
             if (addToBackStack) {
                 transaction.addToBackStack(null)

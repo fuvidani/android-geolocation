@@ -38,6 +38,7 @@ class ReportsAdapter(
     override fun onBindViewHolder(holder: ReportViewHolder, position: Int) {
         val report = getItem(position)
         if (report != null) {
+            holder.reportId = report.timestamp
             Picasso
                     .with(context)
                     .load(Utils.getStreetViewUrl(600, 300, report.actualLatitude, report.actualLongitude))
@@ -68,14 +69,13 @@ class ReportsAdapter(
     }
 }
 
-class ReportViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+class ReportViewHolder(itemView: View, var reportId: Long = 0) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
     init {
         itemView.setOnClickListener(this)
     }
 
     override fun onClick(view: View) {
-        Timber.d("Click")
+        EventBus.getDefault().post(ReportDetailClickEvent(reportId))
     }
-
 }
