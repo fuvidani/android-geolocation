@@ -3,11 +3,8 @@ package at.ac.tuwien.mnsa.geolocation.service;
 import android.app.IntentService;
 import android.content.Intent;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import at.ac.tuwien.mnsa.geolocation.GeoLocationApp;
-import at.ac.tuwien.mnsa.geolocation.Utils;
-import at.ac.tuwien.mnsa.geolocation.dto.ReportTemplate;
-import io.realm.Realm;
+import at.ac.tuwien.mnsa.geolocation.persistence.PersistenceManager;
 import javax.inject.Inject;
 import timber.log.Timber;
 

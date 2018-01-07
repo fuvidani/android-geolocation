@@ -1,4 +1,4 @@
-package at.ac.tuwien.mnsa.geolocation.service;
+package at.ac.tuwien.mnsa.geolocation.persistence;
 
 import android.content.Context;
 import at.ac.tuwien.mnsa.geolocation.Utils;

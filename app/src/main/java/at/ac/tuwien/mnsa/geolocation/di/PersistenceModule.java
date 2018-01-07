@@ -1,8 +1,7 @@
 package at.ac.tuwien.mnsa.geolocation.di;
 
 import android.content.Context;
-import at.ac.tuwien.mnsa.geolocation.service.PersistenceManager;
-import at.ac.tuwien.mnsa.geolocation.service.WifiInformationRetriever;
+import at.ac.tuwien.mnsa.geolocation.persistence.PersistenceManager;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
