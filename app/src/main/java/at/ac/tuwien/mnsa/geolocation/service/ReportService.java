@@ -46,6 +46,6 @@ public class ReportService extends IntentService {
         .subscribe(
             result -> persistenceManager.persistReport(result),
             e -> EventBus.getDefault().post(new ReportGenerationError(e)),
-            () -> Timber.d("Completed"));
+            () -> Timber.d("Report generation completed"));
   }
 }

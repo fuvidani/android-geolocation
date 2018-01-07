@@ -2,7 +2,6 @@ package at.ac.tuwien.mnsa.geolocation.persistence;
 
 import android.content.Context;
 import android.location.Location;
-import android.location.Location;
 import at.ac.tuwien.mnsa.geolocation.Utils;
 import at.ac.tuwien.mnsa.geolocation.dto.AccessPointMeasurement;
 import at.ac.tuwien.mnsa.geolocation.dto.CellTowerMeasurement;
@@ -43,14 +42,17 @@ public class PersistenceManager {
         report.setActualLongitude(reportDraft.getGpsLocationInformation().getLongitude());
         report.setGspAccuracy(reportDraft.getGpsLocationInformation().getAccuracy());
 
-        report.setAssumedLatitude(reportDraft.getMlsLocationInformation().getResponse().location.lat);
-        report.setAssumedLongitude(reportDraft.getMlsLocationInformation().getResponse().location.lng);
+        report
+            .setAssumedLatitude(reportDraft.getMlsLocationInformation().getResponse().location.lat);
+        report.setAssumedLongitude(
+            reportDraft.getMlsLocationInformation().getResponse().location.lng);
         report.setAssumedAccuracy(reportDraft.getMlsLocationInformation().getResponse().accuracy);
 
         RealmList<AccessPointMeasurement> accessPointMeasurements = new RealmList<>();
         RealmList<CellTowerMeasurement> cellTowerMeasurements = new RealmList<>();
 
-        for (RemoteMLSWifi wifi: reportDraft.getMlsLocationInformation().getRequest().wifiAccessPoints) {
+        for (RemoteMLSWifi wifi : reportDraft.getMlsLocationInformation()
+            .getRequest().wifiAccessPoints) {
           AccessPointMeasurement measurement = new AccessPointMeasurement();
 
           measurement.setAddress(wifi.macAddress);
@@ -60,7 +62,8 @@ public class PersistenceManager {
           accessPointMeasurements.add(measurement);
         }
 
-        for (RemoteMLSCellTower cellTower: reportDraft.getMlsLocationInformation().getRequest().cellTowers) {
+        for (RemoteMLSCellTower cellTower : reportDraft.getMlsLocationInformation()
+            .getRequest().cellTowers) {
           CellTowerMeasurement measurement = new CellTowerMeasurement();
 
           measurement.setCellId(String.valueOf(cellTower.cellId));
@@ -78,8 +81,10 @@ public class PersistenceManager {
 
         Location mlsLocation = new Location("");
         mlsLocation.setLatitude(reportDraft.getMlsLocationInformation().getResponse().location.lat);
-        mlsLocation.setLongitude(reportDraft.getMlsLocationInformation().getResponse().location.lng);
-        report.setPositionDifference(reportDraft.getGpsLocationInformation().distanceTo(mlsLocation));
+        mlsLocation
+            .setLongitude(reportDraft.getMlsLocationInformation().getResponse().location.lng);
+        report
+            .setPositionDifference(reportDraft.getGpsLocationInformation().distanceTo(mlsLocation));
 
         r.copyToRealmOrUpdate(report);
       });
