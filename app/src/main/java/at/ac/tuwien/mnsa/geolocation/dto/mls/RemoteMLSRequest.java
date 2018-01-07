@@ -11,8 +11,6 @@ import java.util.List;
  * @version 0.1.0
  * @since 0.1.0
  */
-
-
 public class RemoteMLSRequest {
   public List<RemoteMLSWifi> wifiAccessPoints;
   public List<RemoteMLSCellTower> cellTowers;

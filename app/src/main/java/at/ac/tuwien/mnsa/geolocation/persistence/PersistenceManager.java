@@ -5,16 +5,12 @@ import android.location.Location;
 import at.ac.tuwien.mnsa.geolocation.Utils;
 import at.ac.tuwien.mnsa.geolocation.dto.AccessPointMeasurement;
 import at.ac.tuwien.mnsa.geolocation.dto.CellTowerMeasurement;
-import at.ac.tuwien.mnsa.geolocation.dto.CellType;
 import at.ac.tuwien.mnsa.geolocation.dto.Report;
 import at.ac.tuwien.mnsa.geolocation.dto.ReportTemplate;
 import at.ac.tuwien.mnsa.geolocation.dto.mls.RemoteMLSCellTower;
 import at.ac.tuwien.mnsa.geolocation.dto.mls.RemoteMLSWifi;
 import io.realm.Realm;
-import io.realm.Realm.Transaction;
 import io.realm.RealmList;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * <h4>About this class</h4>
@@ -25,8 +21,6 @@ import java.util.List;
  * @version 0.1.0
  * @since 0.1.0
  */
-
-
 public class PersistenceManager {
   private final Context context;
 
@@ -78,7 +72,7 @@ public class PersistenceManager {
         report.setPointMeasurements(accessPointMeasurements);
         report.setTowerMeasurements(cellTowerMeasurements);
 
-        Location mlsLocation = new Location("");//provider name is unnecessary
+        Location mlsLocation = new Location("");
         mlsLocation.setLatitude(reportTemplate.getMlsLocationInformation().getResponse().location.lat);
         mlsLocation.setLongitude(reportTemplate.getMlsLocationInformation().getResponse().location.lng);
         report.setAccuracyDifference(reportTemplate.getGpsLocationInformation().distanceTo(mlsLocation));

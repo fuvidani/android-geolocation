@@ -4,7 +4,6 @@ import android.content.Context;
 import android.location.Location;
 import com.google.android.gms.location.LocationRequest;
 import io.reactivex.Observable;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.subjects.BehaviorSubject;
 import pl.charmas.android.reactivelocation2.ReactiveLocationProvider;
 
@@ -17,8 +16,6 @@ import pl.charmas.android.reactivelocation2.ReactiveLocationProvider;
  * @version 0.1.0
  * @since 0.1.0
  */
-
-
 public class GPSLocationService {
 
   private final Context context;

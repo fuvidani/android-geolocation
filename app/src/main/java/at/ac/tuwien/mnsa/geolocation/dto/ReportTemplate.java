@@ -11,8 +11,6 @@ import android.location.Location;
  * @version 0.1.0
  * @since 0.1.0
  */
-
-
 public class ReportTemplate {
 
   private final MLSLocationInformation mlsLocationInformation;

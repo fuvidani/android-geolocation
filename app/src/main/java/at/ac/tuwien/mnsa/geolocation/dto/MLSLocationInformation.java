@@ -12,8 +12,6 @@ import at.ac.tuwien.mnsa.geolocation.dto.mls.RemoteMLSResponse;
  * @version 0.1.0
  * @since 0.1.0
  */
-
-
 public class MLSLocationInformation {
   private final RemoteMLSRequest request;
   private final RemoteMLSResponse response;
