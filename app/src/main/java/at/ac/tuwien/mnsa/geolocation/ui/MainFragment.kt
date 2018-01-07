@@ -41,8 +41,6 @@ import java.util.concurrent.TimeUnit
  */
 class MainFragment : Fragment() {
 
-    private lateinit var adapter: ReportsAdapter
-    private lateinit var realm: Realm
     private var alertDialog: AlertDialog? = null
     private var disposable: Disposable? = null
 
@@ -63,7 +61,6 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setUpToolbar()
         fab_add_report.show()
-        realm = (activity as MainActivity).realm
         setUpRecyclerView()
         observeFabClicks(view)
     }
@@ -78,12 +75,14 @@ class MainFragment : Fragment() {
     }
 
     private fun setUpRecyclerView() {
-        adapter = ReportsAdapter(realm.where<Report>()
-                .sort("timestamp", Sort.DESCENDING)
-                .findAll(), true, context)
         val layoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = layoutManager
         recyclerView.setHasFixedSize(true)
+        val realm = (activity as MainActivity).realm
+        val adapter = ReportsAdapter(
+                realm.where<Report>()
+                        .sort("timestamp", Sort.DESCENDING)
+                        .findAll(), true, context)
         adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                 super.onItemRangeInserted(positionStart, itemCount)

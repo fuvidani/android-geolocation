@@ -36,7 +36,6 @@ import timber.log.Timber
  */
 class DetailViewFragment : Fragment() {
 
-    private lateinit var realm: Realm
     private lateinit var report: Report
     private var alertDialog: AlertDialog? = null
     private var disposable: Disposable? = null
@@ -49,7 +48,7 @@ class DetailViewFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        realm = (activity as MainActivity).realm
+        val realm = (activity as MainActivity).realm
         val reportId: Long? = arguments?.getLong("reportId")
         val r = realm.where<Report>().equalTo("timestamp", reportId).findFirst()
         if (r != null) {
