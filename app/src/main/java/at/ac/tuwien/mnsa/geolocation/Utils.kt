@@ -4,7 +4,11 @@ package at.ac.tuwien.mnsa.geolocation
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.text.format.DateFormat
+import at.ac.tuwien.mnsa.geolocation.dto.AccessPointMeasurement
+import at.ac.tuwien.mnsa.geolocation.dto.CellTowerMeasurement
+import at.ac.tuwien.mnsa.geolocation.dto.Report
 import io.realm.RealmConfiguration
+import io.realm.RealmList
 import java.util.*
 
 /**
@@ -55,6 +59,26 @@ class Utils {
             val cal = Calendar.getInstance(Locale.ENGLISH)
             cal.timeInMillis = timestamp
             return DateFormat.format("dd. MMMM yyyy HH:mm:ss", cal).toString()
+        }
+
+        fun generateDummyReport(): Report {
+            val towerMeasurements = RealmList<CellTowerMeasurement>()
+            for (a in 1..10) {
+                towerMeasurements.add(generateDummyTowerMeasurement())
+            }
+            val accessPointsMeasurements = RealmList<AccessPointMeasurement>()
+            for (a in 1..10) {
+                accessPointsMeasurements.add(generateDummyAccessPointMeasurement())
+            }
+            return Report(System.currentTimeMillis(), 36.112764, -113.9960696, 350.0, 36.112764, -113.9960696, 5.0, 100.0, towerMeasurements, accessPointsMeasurements)
+        }
+
+        private fun generateDummyTowerMeasurement(): CellTowerMeasurement {
+            return CellTowerMeasurement("666666", "77777", "88888", "123456")
+        }
+
+        private fun generateDummyAccessPointMeasurement(): AccessPointMeasurement {
+            return AccessPointMeasurement("00:80:41:ae:fd:7e", 100, 100)
         }
     }
 }

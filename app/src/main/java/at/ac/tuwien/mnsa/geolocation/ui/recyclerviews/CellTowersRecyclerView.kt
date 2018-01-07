@@ -31,7 +31,7 @@ class CellTowersAdapter(private val context: Context,
     }
 
     override fun onBindViewHolder(holder: CellTowerViewHolder, position: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 }
 

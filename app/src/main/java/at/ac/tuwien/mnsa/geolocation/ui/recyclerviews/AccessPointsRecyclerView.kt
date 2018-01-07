@@ -31,7 +31,7 @@ class AccessPointsAdapter(private val context: Context,
     }
 
     override fun onBindViewHolder(holder: AccessPointViewHolder?, position: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 }
 

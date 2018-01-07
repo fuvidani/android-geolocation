@@ -117,11 +117,8 @@ class MainFragment : Fragment() {
                                 var reportId = 0L
                                 Realm.getInstance(Utils.getNormalRealmConfig()).use {
                                     it.executeTransaction { realm ->
-                                        val report = Report()
-                                        report.timestamp = System.currentTimeMillis()
+                                        val report = Utils.generateDummyReport()
                                         reportId = report.timestamp
-                                        report.actualLatitude = 47.5149429
-                                        report.actualLongitude = 19.0778626
                                         realm.copyToRealmOrUpdate(report)
                                     }
                                 }
