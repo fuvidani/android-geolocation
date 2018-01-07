@@ -1,6 +1,7 @@
 package at.ac.tuwien.mnsa.geolocation.ui
 
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -9,6 +10,7 @@ import android.view.*
 import at.ac.tuwien.mnsa.geolocation.R
 import at.ac.tuwien.mnsa.geolocation.Utils
 import at.ac.tuwien.mnsa.geolocation.dto.Report
+import at.ac.tuwien.mnsa.geolocation.dto.ReportDetailClickEvent
 import com.jakewharton.rxbinding2.view.RxView
 import com.trello.rxlifecycle2.kotlin.bindToLifecycle
 import io.reactivex.Observable
@@ -17,6 +19,7 @@ import io.realm.Realm
 import io.realm.Sort
 import io.realm.kotlin.where
 import kotlinx.android.synthetic.main.fragment_main.*
+import org.greenrobot.eventbus.EventBus
 import java.util.concurrent.TimeUnit
 
 
@@ -99,22 +102,32 @@ class MainFragment : Fragment() {
                             .timer(3000, TimeUnit.MILLISECONDS)
                             .bindToLifecycle(view)
                             .map {
+                                var reportId = 0L
                                 Realm.getInstance(Utils.getNormalRealmConfig()).use {
                                     it.executeTransaction { realm ->
                                         val report = Report()
                                         report.timestamp = System.currentTimeMillis()
+                                        reportId = report.timestamp
                                         report.actualLatitude = 47.5149429
                                         report.actualLongitude = 19.0778626
                                         realm.copyToRealmOrUpdate(report)
                                     }
                                 }
+                                reportId
                             }
                             .observeOn(AndroidSchedulers.mainThread())
-                            .map {
+                            .map { aLong ->
                                 progressBar.visibility = View.GONE
                                 fab_add_report.show()
+                                showInsertSnackbar(aLong)
                             }
                 }
                 .subscribe()
+    }
+
+    private fun showInsertSnackbar(reportId: Long) {
+        Snackbar.make(fab_add_report, R.string.new_report_snackbar_msg, Snackbar.LENGTH_LONG)
+                .setAction(R.string.new_report_snackbar_action, { EventBus.getDefault().post(ReportDetailClickEvent(reportId)) })
+                .show()
     }
 }
