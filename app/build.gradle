@@ -7,6 +7,7 @@ apply plugin: 'realm-android'
 android {
     compileSdkVersion 26
     defaultConfig {
+        multiDexEnabled true
         applicationId "at.ac.tuwien.mnsa.geolocation"
         minSdkVersion 19
         targetSdkVersion 26
@@ -24,9 +25,6 @@ android {
     compileOptions {
         targetCompatibility 1.8
         sourceCompatibility 1.8
-    }
-    defaultConfig {
-        multiDexEnabled true
     }
 }
 
