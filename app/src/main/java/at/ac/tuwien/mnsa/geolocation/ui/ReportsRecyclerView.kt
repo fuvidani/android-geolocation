@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import at.ac.tuwien.mnsa.geolocation.R
 import at.ac.tuwien.mnsa.geolocation.Utils
 import at.ac.tuwien.mnsa.geolocation.dto.Report
+import at.ac.tuwien.mnsa.geolocation.dto.ReportDeleteClickEvent
 import at.ac.tuwien.mnsa.geolocation.dto.ReportDetailClickEvent
 import com.squareup.picasso.Picasso
 import io.realm.OrderedRealmCollection
@@ -46,6 +47,7 @@ class ReportsAdapter(
                     .error(R.drawable.default_placeholder)
                     .into(holder.itemView.cardImage)
             holder.itemView.details_button.setOnClickListener { EventBus.getDefault().post(ReportDetailClickEvent(report.timestamp)) }
+            holder.itemView.delete_button.setOnClickListener { EventBus.getDefault().post(ReportDeleteClickEvent(report.timestamp)) }
             holder.itemView.measurementAccuracyDifferenceTv.text = String.format(context.getString(R.string.overview_card_text), report.accuracyDifference.toString())
             val cal = Calendar.getInstance(Locale.ENGLISH)
             cal.timeInMillis = report.timestamp

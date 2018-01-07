@@ -3,6 +3,7 @@ package at.ac.tuwien.mnsa.geolocation.ui
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -10,16 +11,21 @@ import android.view.*
 import at.ac.tuwien.mnsa.geolocation.R
 import at.ac.tuwien.mnsa.geolocation.Utils
 import at.ac.tuwien.mnsa.geolocation.dto.Report
+import at.ac.tuwien.mnsa.geolocation.dto.ReportDeleteClickEvent
 import at.ac.tuwien.mnsa.geolocation.dto.ReportDetailClickEvent
 import com.jakewharton.rxbinding2.view.RxView
 import com.trello.rxlifecycle2.kotlin.bindToLifecycle
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import io.realm.Realm
 import io.realm.Sort
 import io.realm.kotlin.where
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import java.util.concurrent.TimeUnit
 
 
@@ -36,6 +42,8 @@ class MainFragment : Fragment() {
 
     private lateinit var adapter: ReportsAdapter
     private lateinit var realm: Realm
+    private var alertDialog: AlertDialog? = null
+    private var disposable: Disposable? = null
 
     companion object {
         fun newInstance(): MainFragment {
@@ -46,6 +54,7 @@ class MainFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_main, container, false)
         setHasOptionsMenu(true)
+        EventBus.getDefault().register(this)
         return view
     }
 
@@ -87,6 +96,9 @@ class MainFragment : Fragment() {
         super.onDestroyView()
         fab_add_report.hide()
         recyclerView.adapter = null
+        EventBus.getDefault().unregister(this)
+        alertDialog?.dismiss()
+        disposable?.dispose()
     }
 
     private fun observeFabClicks(view: View) {
@@ -129,5 +141,33 @@ class MainFragment : Fragment() {
         Snackbar.make(fab_add_report, R.string.new_report_snackbar_msg, Snackbar.LENGTH_LONG)
                 .setAction(R.string.new_report_snackbar_action, { EventBus.getDefault().post(ReportDetailClickEvent(reportId)) })
                 .show()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
+    fun onDeleteReport(event: ReportDeleteClickEvent) {
+        val reportId = event.reportId
+        alertDialog = AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle)
+                .setTitle(getString(R.string.dialog_delete_title))
+                .setMessage(getString(R.string.dialog_delete_message))
+                .setNegativeButton(getString(R.string.dialog_delete_negative), { dialog, _ -> dialog.dismiss() })
+                .setPositiveButton(getString(R.string.dialog_delete_positive),
+                        { dialog, _ ->
+                            dialog.dismiss()
+                            disposable = Observable.just(true)
+                                    .subscribeOn(Schedulers.io())
+                                    .map {
+                                        Realm.getInstance(Utils.getNormalRealmConfig()).use {
+                                            val r = it.where<Report>().equalTo("timestamp", reportId).findFirst()
+                                            it.executeTransaction { _ ->
+                                                r?.deleteFromRealm()
+                                            }
+                                        }
+                                    }
+                                    .subscribe()
+
+                        })
+                .create()
+        alertDialog?.show()
     }
 }
