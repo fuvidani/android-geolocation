@@ -35,6 +35,7 @@
       android:indeterminate="true"
       android:indeterminateOnly="true"
       android:visibility="gone"
+      android:scaleY="3"
       style="?android:attr/progressBarStyleHorizontal" />
 
     <android.support.v7.widget.RecyclerView
@@ -42,6 +43,8 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:scrollbars="vertical"
+      android:paddingBottom="@dimen/md_keylines"
+      android:clipToPadding="false"
       app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     </android.support.v7.widget.RecyclerView>

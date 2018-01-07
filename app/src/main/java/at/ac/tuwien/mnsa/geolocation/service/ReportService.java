@@ -4,14 +4,18 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import at.ac.tuwien.mnsa.geolocation.GeoLocationApp;
+import at.ac.tuwien.mnsa.geolocation.dto.ReportGenerationError;
 import at.ac.tuwien.mnsa.geolocation.persistence.PersistenceManager;
 import javax.inject.Inject;
+import org.greenrobot.eventbus.EventBus;
 import timber.log.Timber;
 
 /**
+ *
+ *
  * <h4>About this class</h4>
  *
- * <p>Description of this class</p>
+ * <p>Description of this class
  *
  * @author David Molnar
  * @version 0.1.0
@@ -32,16 +36,16 @@ public class ReportService extends IntentService {
   @Override
   public void onCreate() {
     super.onCreate();
-
     ((GeoLocationApp) getApplication()).getApplicationComponent().inject(this);
   }
 
   @Override
   protected void onHandleIntent(@Nullable Intent intent) {
-    reportGenerator.generateReport().subscribe(result -> {
-          persistenceManager.persistReport(result);
-        },
-        Timber::e,
-        () -> Timber.d("Completed"));
+    reportGenerator
+        .generateReport()
+        .subscribe(
+            result -> persistenceManager.persistReport(result),
+            e -> EventBus.getDefault().post(new ReportGenerationError(e)),
+            () -> Timber.d("Completed"));
   }
 }
