@@ -5,7 +5,7 @@ import android.net.wifi.ScanResult;
 import at.ac.tuwien.mnsa.geolocation.dto.CellTower;
 import at.ac.tuwien.mnsa.geolocation.dto.MLSLocationInformation;
 import at.ac.tuwien.mnsa.geolocation.dto.NetworkInformation;
-import at.ac.tuwien.mnsa.geolocation.dto.ReportTemplate;
+import at.ac.tuwien.mnsa.geolocation.dto.ReportDraft;
 import at.ac.tuwien.mnsa.geolocation.dto.mls.RemoteMLSCellTower;
 import at.ac.tuwien.mnsa.geolocation.dto.mls.RemoteMLSRequest;
 import at.ac.tuwien.mnsa.geolocation.dto.mls.RemoteMLSWifi;
@@ -41,11 +41,11 @@ public class ReportGenerator {
     this.gpsLocationService = gpsLocationService;
   }
 
-  public Observable<ReportTemplate> generateReport() {
+  public Observable<ReportDraft> generateReport() {
     Observable<MLSLocationInformation> mlsLocationInformationObservable = getMLSLocation();
     Observable<Location> gpsLocationInformationObservable = getGPSLocation();
 
-    return Observable.zip(mlsLocationInformationObservable, gpsLocationInformationObservable, ReportTemplate::new);
+    return Observable.zip(mlsLocationInformationObservable, gpsLocationInformationObservable, ReportDraft::new);
   }
 
   private Observable<List<ScanResult>> getWifiInformation() {
