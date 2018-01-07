@@ -42,6 +42,6 @@ public class ReportService extends IntentService {
           persistenceManager.persistReport(result);
         },
         Timber::e,
-        () -> Timber.d("Completed"));
+        () -> Timber.d("Report generation completed"));
   }
 }

@@ -19,7 +19,6 @@ import pl.charmas.android.reactivelocation2.ReactiveLocationProvider;
 public class GPSLocationService {
 
   private final Context context;
-  private BehaviorSubject<Location> subject = BehaviorSubject.create();
   private LocationRequest request = LocationRequest.create().setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
   public GPSLocationService(Context context) {
