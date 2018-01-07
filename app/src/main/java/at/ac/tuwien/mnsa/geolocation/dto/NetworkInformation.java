@@ -12,8 +12,6 @@ import java.util.List;
  * @version 0.1.0
  * @since 0.1.0
  */
-
-
 public class NetworkInformation {
   private final List<ScanResult> wifiInformation;
   private final List<CellTower> cellInformation;

@@ -1,12 +1,14 @@
 package at.ac.tuwien.mnsa.geolocation.persistence;
 
 import android.content.Context;
+import android.location.Location;
+import android.location.Location;
 import at.ac.tuwien.mnsa.geolocation.Utils;
 import at.ac.tuwien.mnsa.geolocation.dto.AccessPointMeasurement;
 import at.ac.tuwien.mnsa.geolocation.dto.CellTowerMeasurement;
 import at.ac.tuwien.mnsa.geolocation.dto.Report;
+import at.ac.tuwien.mnsa.geolocation.dto.ReportDraft;
 import at.ac.tuwien.mnsa.geolocation.dto.ReportGeneratedEvent;
-import at.ac.tuwien.mnsa.geolocation.dto.ReportTemplate;
 import at.ac.tuwien.mnsa.geolocation.dto.mls.RemoteMLSCellTower;
 import at.ac.tuwien.mnsa.geolocation.dto.mls.RemoteMLSWifi;
 import io.realm.Realm;
@@ -22,17 +24,14 @@ import org.greenrobot.eventbus.EventBus;
  * @version 0.1.0
  * @since 0.1.0
  */
-
-
 public class PersistenceManager {
-
   private final Context context;
 
   public PersistenceManager(Context context) {
     this.context = context;
   }
 
-  public void persistReport(ReportTemplate reportTemplate) {
+  public void persistReport(ReportDraft reportDraft) {
     final long reportId = System.currentTimeMillis();
     try (Realm realm = Realm.getInstance(Utils.Companion.getNormalRealmConfig())) {
       realm.executeTransaction(r -> {
@@ -40,22 +39,18 @@ public class PersistenceManager {
 
         report.setTimestamp(reportId);
 
-        report.setActualLatitude(reportTemplate.getGpsLocationInformation().getLatitude());
-        report.setActualLongitude(reportTemplate.getGpsLocationInformation().getLongitude());
-        report.setGspAccuracy(reportTemplate.getGpsLocationInformation().getAccuracy());
+        report.setActualLatitude(reportDraft.getGpsLocationInformation().getLatitude());
+        report.setActualLongitude(reportDraft.getGpsLocationInformation().getLongitude());
+        report.setGspAccuracy(reportDraft.getGpsLocationInformation().getAccuracy());
 
-        report.setAssumedLatitude(
-            reportTemplate.getMlsLocationInformation().getResponse().location.lat);
-        report.setAssumedLongitude(
-            reportTemplate.getMlsLocationInformation().getResponse().location.lng);
-        report
-            .setAssumedAccuracy(reportTemplate.getMlsLocationInformation().getResponse().accuracy);
+        report.setAssumedLatitude(reportDraft.getMlsLocationInformation().getResponse().location.lat);
+        report.setAssumedLongitude(reportDraft.getMlsLocationInformation().getResponse().location.lng);
+        report.setAssumedAccuracy(reportDraft.getMlsLocationInformation().getResponse().accuracy);
 
         RealmList<AccessPointMeasurement> accessPointMeasurements = new RealmList<>();
         RealmList<CellTowerMeasurement> cellTowerMeasurements = new RealmList<>();
 
-        for (RemoteMLSWifi wifi : reportTemplate.getMlsLocationInformation()
-            .getRequest().wifiAccessPoints) {
+        for (RemoteMLSWifi wifi: reportDraft.getMlsLocationInformation().getRequest().wifiAccessPoints) {
           AccessPointMeasurement measurement = new AccessPointMeasurement();
 
           measurement.setAddress(wifi.macAddress);
@@ -65,8 +60,7 @@ public class PersistenceManager {
           accessPointMeasurements.add(measurement);
         }
 
-        for (RemoteMLSCellTower cellTower : reportTemplate.getMlsLocationInformation()
-            .getRequest().cellTowers) {
+        for (RemoteMLSCellTower cellTower: reportDraft.getMlsLocationInformation().getRequest().cellTowers) {
           CellTowerMeasurement measurement = new CellTowerMeasurement();
 
           measurement.setCellId(String.valueOf(cellTower.cellId));
@@ -81,6 +75,11 @@ public class PersistenceManager {
 
         report.setPointMeasurements(accessPointMeasurements);
         report.setTowerMeasurements(cellTowerMeasurements);
+
+        Location mlsLocation = new Location("");
+        mlsLocation.setLatitude(reportDraft.getMlsLocationInformation().getResponse().location.lat);
+        mlsLocation.setLongitude(reportDraft.getMlsLocationInformation().getResponse().location.lng);
+        report.setPositionDifference(reportDraft.getGpsLocationInformation().distanceTo(mlsLocation));
 
         r.copyToRealmOrUpdate(report);
       });

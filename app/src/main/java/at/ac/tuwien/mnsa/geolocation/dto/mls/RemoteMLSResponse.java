@@ -9,8 +9,6 @@ package at.ac.tuwien.mnsa.geolocation.dto.mls;
  * @version 0.1.0
  * @since 0.1.0
  */
-
-
 public class RemoteMLSResponse {
   public RemoteMLSLocation location;
   public double accuracy;
