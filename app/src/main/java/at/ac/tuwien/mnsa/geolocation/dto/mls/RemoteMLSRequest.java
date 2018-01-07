@@ -1,6 +1,5 @@
 package at.ac.tuwien.mnsa.geolocation.dto.mls;
 
-import at.ac.tuwien.mnsa.geolocation.dto.CellTower;
 import java.util.List;
 
 /**
