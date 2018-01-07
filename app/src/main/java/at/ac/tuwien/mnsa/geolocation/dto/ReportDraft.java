@@ -11,12 +11,12 @@ import android.location.Location;
  * @version 0.1.0
  * @since 0.1.0
  */
-public class ReportTemplate {
+public class ReportDraft {
 
   private final MLSLocationInformation mlsLocationInformation;
   private final Location gpsLocationInformation;
 
-  public ReportTemplate(
+  public ReportDraft(
       MLSLocationInformation mlsLocationInformation,
       Location gpsLocationInformation) {
     this.mlsLocationInformation = mlsLocationInformation;

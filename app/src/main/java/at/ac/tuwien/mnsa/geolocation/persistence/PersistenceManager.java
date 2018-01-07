@@ -6,7 +6,7 @@ import at.ac.tuwien.mnsa.geolocation.Utils;
 import at.ac.tuwien.mnsa.geolocation.dto.AccessPointMeasurement;
 import at.ac.tuwien.mnsa.geolocation.dto.CellTowerMeasurement;
 import at.ac.tuwien.mnsa.geolocation.dto.Report;
-import at.ac.tuwien.mnsa.geolocation.dto.ReportTemplate;
+import at.ac.tuwien.mnsa.geolocation.dto.ReportDraft;
 import at.ac.tuwien.mnsa.geolocation.dto.mls.RemoteMLSCellTower;
 import at.ac.tuwien.mnsa.geolocation.dto.mls.RemoteMLSWifi;
 import io.realm.Realm;
@@ -28,25 +28,25 @@ public class PersistenceManager {
     this.context = context;
   }
 
-  public void persistReport(ReportTemplate reportTemplate) {
+  public void persistReport(ReportDraft reportDraft) {
     try (Realm realm = Realm.getInstance(Utils.Companion.getNormalRealmConfig())) {
       realm.executeTransaction(r -> {
         Report report = new Report();
 
         report.setTimestamp(System.currentTimeMillis());
 
-        report.setActualLatitude(reportTemplate.getGpsLocationInformation().getLatitude());
-        report.setActualLongitude(reportTemplate.getGpsLocationInformation().getLongitude());
-        report.setGspAccuracy(reportTemplate.getGpsLocationInformation().getAccuracy());
+        report.setActualLatitude(reportDraft.getGpsLocationInformation().getLatitude());
+        report.setActualLongitude(reportDraft.getGpsLocationInformation().getLongitude());
+        report.setGspAccuracy(reportDraft.getGpsLocationInformation().getAccuracy());
 
-        report.setAssumedLatitude(reportTemplate.getMlsLocationInformation().getResponse().location.lat);
-        report.setAssumedLongitude(reportTemplate.getMlsLocationInformation().getResponse().location.lng);
-        report.setAssumedAccuracy(reportTemplate.getMlsLocationInformation().getResponse().accuracy);
+        report.setAssumedLatitude(reportDraft.getMlsLocationInformation().getResponse().location.lat);
+        report.setAssumedLongitude(reportDraft.getMlsLocationInformation().getResponse().location.lng);
+        report.setAssumedAccuracy(reportDraft.getMlsLocationInformation().getResponse().accuracy);
 
         RealmList<AccessPointMeasurement> accessPointMeasurements = new RealmList<>();
         RealmList<CellTowerMeasurement> cellTowerMeasurements = new RealmList<>();
 
-        for (RemoteMLSWifi wifi: reportTemplate.getMlsLocationInformation().getRequest().wifiAccessPoints) {
+        for (RemoteMLSWifi wifi: reportDraft.getMlsLocationInformation().getRequest().wifiAccessPoints) {
           AccessPointMeasurement measurement = new AccessPointMeasurement();
 
           measurement.setAddress(wifi.macAddress);
@@ -56,7 +56,7 @@ public class PersistenceManager {
           accessPointMeasurements.add(measurement);
         }
 
-        for (RemoteMLSCellTower cellTower: reportTemplate.getMlsLocationInformation().getRequest().cellTowers) {
+        for (RemoteMLSCellTower cellTower: reportDraft.getMlsLocationInformation().getRequest().cellTowers) {
           CellTowerMeasurement measurement = new CellTowerMeasurement();
 
           measurement.setCellId(String.valueOf(cellTower.cellId));
@@ -73,9 +73,9 @@ public class PersistenceManager {
         report.setTowerMeasurements(cellTowerMeasurements);
 
         Location mlsLocation = new Location("");
-        mlsLocation.setLatitude(reportTemplate.getMlsLocationInformation().getResponse().location.lat);
-        mlsLocation.setLongitude(reportTemplate.getMlsLocationInformation().getResponse().location.lng);
-        report.setAccuracyDifference(reportTemplate.getGpsLocationInformation().distanceTo(mlsLocation));
+        mlsLocation.setLatitude(reportDraft.getMlsLocationInformation().getResponse().location.lat);
+        mlsLocation.setLongitude(reportDraft.getMlsLocationInformation().getResponse().location.lng);
+        report.setAccuracyDifference(reportDraft.getGpsLocationInformation().distanceTo(mlsLocation));
 
         r.copyToRealmOrUpdate(report);
       });
