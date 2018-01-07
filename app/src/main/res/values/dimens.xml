@@ -6,7 +6,7 @@
   <dimen name="card_elevation_rest">2dp</dimen>
   <dimen name="card_elevation_picked">8dp</dimen>
   <dimen name="floating_button_elevation">12dp</dimen>
-  <dimen name="card_image_height">120dp</dimen>
+  <dimen name="card_image_height">160dp</dimen>
   <dimen name="card_title_height">40dp</dimen>
   <dimen name="fab_margin">16dp</dimen>
   <dimen name="app_bar_height">256dp</dimen>

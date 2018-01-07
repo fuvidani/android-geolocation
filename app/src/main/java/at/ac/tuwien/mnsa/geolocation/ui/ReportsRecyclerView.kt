@@ -46,7 +46,7 @@ class ReportsAdapter(
                     .error(R.drawable.default_placeholder)
                     .into(holder.itemView.cardImage)
             holder.itemView.details_button.setOnClickListener { EventBus.getDefault().post(ReportDetailClickEvent(report.timestamp)) }
-            holder.itemView.measurementLocationTv.text = String.format(context.getString(R.string.actual_location), report.actualLatitude, report.actualLongitude)
+            holder.itemView.measurementAccuracyDifferenceTv.text = String.format(context.getString(R.string.overview_card_text), report.accuracyDifference.toString())
             val cal = Calendar.getInstance(Locale.ENGLISH)
             cal.timeInMillis = report.timestamp
             val formattedDate = DateFormat.format("dd. MMMM yyyy HH:mm:ss", cal).toString()
