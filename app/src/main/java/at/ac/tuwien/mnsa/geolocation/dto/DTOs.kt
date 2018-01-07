@@ -49,15 +49,17 @@ enum class CellType {
 
 open class CellTowerMeasurement(
         var cellId: String = "",
+        var cellType: String = "",
         var countryCode: String = "",
         var networkId: String = "",
-        var locationAreaCode: String = ""
+        var locationAreaCode: String = "",
+        var strength: Long = -1
 ) : RealmObject()
 
 open class AccessPointMeasurement(
         var address: String = "",
-        var strength: Int = -1,
-        var channel: Int = -1
+        var strength: Long = -1,
+        var frequency: Long = -1
 ) : RealmObject()
 
 open class Report(
