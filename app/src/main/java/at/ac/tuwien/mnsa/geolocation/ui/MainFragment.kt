@@ -1,5 +1,6 @@
 package at.ac.tuwien.mnsa.geolocation.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
@@ -13,9 +14,10 @@ import at.ac.tuwien.mnsa.geolocation.Utils
 import at.ac.tuwien.mnsa.geolocation.dto.Report
 import at.ac.tuwien.mnsa.geolocation.dto.ReportDeleteClickEvent
 import at.ac.tuwien.mnsa.geolocation.dto.ReportDetailClickEvent
+import at.ac.tuwien.mnsa.geolocation.dto.ReportGeneratedEvent
+import at.ac.tuwien.mnsa.geolocation.service.ReportService
 import at.ac.tuwien.mnsa.geolocation.ui.recyclerviews.ReportsAdapter
 import com.jakewharton.rxbinding2.view.RxView
-import com.trello.rxlifecycle2.kotlin.bindToLifecycle
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -28,8 +30,6 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.util.concurrent.TimeUnit
-import android.content.Intent
-import at.ac.tuwien.mnsa.geolocation.service.ReportService
 
 
 /**
@@ -64,7 +64,6 @@ class MainFragment : Fragment() {
         setUpToolbar()
         fab_add_report.show()
         setUpRecyclerView()
-//        observeFabClicks(view)
         initButton(view)
     }
 
@@ -104,22 +103,30 @@ class MainFragment : Fragment() {
         disposable?.dispose()
     }
 
-    private fun generateReport() {
-        val intent = Intent(activity, ReportService::class.java)
-        activity.startService(intent)
-    }
-
     private fun initButton(view: View) {
         RxView.clicks(fab_add_report)
                 .throttleFirst(1, TimeUnit.SECONDS)
-                .bindToLifecycle(view)
+                .subscribeOn(AndroidSchedulers.mainThread())
                 .map {
-                    generateReport()
+                    progressBar.visibility = View.VISIBLE
+                    fab_add_report.hide()
                 }
+                .observeOn(Schedulers.io())
+                .map { context.startService(Intent(context, ReportService::class.java)) }
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe()
     }
 
-    private fun observeFabClicks(view: View) {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onNewReport(event: ReportGeneratedEvent) {
+        progressBar.visibility = View.GONE
+        fab_add_report.show()
+        Snackbar.make(fab_add_report, R.string.new_report_snackbar_msg, Snackbar.LENGTH_LONG)
+                .setAction(R.string.new_report_snackbar_action, { EventBus.getDefault().post(ReportDetailClickEvent(event.reportId)) })
+                .show()
+    }
+
+    /*private fun observeFabClicks(view: View) {
         RxView.clicks(fab_add_report)
                 .throttleFirst(1, TimeUnit.SECONDS)
                 .bindToLifecycle(view)
@@ -150,13 +157,8 @@ class MainFragment : Fragment() {
                             }
                 }
                 .subscribe()
-    }
+    }*/
 
-    private fun showInsertSnackbar(reportId: Long) {
-        Snackbar.make(fab_add_report, R.string.new_report_snackbar_msg, Snackbar.LENGTH_LONG)
-                .setAction(R.string.new_report_snackbar_action, { EventBus.getDefault().post(ReportDetailClickEvent(reportId)) })
-                .show()
-    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     @SuppressWarnings("unused")

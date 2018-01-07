@@ -81,3 +81,5 @@ open class LocationServiceKey(
 data class ReportDetailClickEvent(val reportId: Long)
 
 data class ReportDeleteClickEvent(val reportId: Long)
+
+data class ReportGeneratedEvent(val reportId: Long)

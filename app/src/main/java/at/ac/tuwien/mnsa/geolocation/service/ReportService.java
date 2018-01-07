@@ -3,11 +3,7 @@ package at.ac.tuwien.mnsa.geolocation.service;
 import android.app.IntentService;
 import android.content.Intent;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import at.ac.tuwien.mnsa.geolocation.GeoLocationApp;
-import at.ac.tuwien.mnsa.geolocation.Utils;
-import at.ac.tuwien.mnsa.geolocation.dto.ReportTemplate;
-import io.realm.Realm;
 import javax.inject.Inject;
 import timber.log.Timber;
 
@@ -41,9 +37,8 @@ public class ReportService extends IntentService {
 
   @Override
   protected void onHandleIntent(@Nullable Intent intent) {
-    reportGenerator.generateReport().subscribe(result -> {
-          persistenceManager.persistReport(result);
-        },
+    reportGenerator.generateReport().subscribe(
+        result -> persistenceManager.persistReport(result),
         Timber::e,
         () -> Timber.d("Completed"));
   }

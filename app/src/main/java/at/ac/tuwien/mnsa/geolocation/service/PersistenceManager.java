@@ -3,9 +3,10 @@ package at.ac.tuwien.mnsa.geolocation.service;
 import android.content.Context;
 import at.ac.tuwien.mnsa.geolocation.Utils;
 import at.ac.tuwien.mnsa.geolocation.dto.Report;
+import at.ac.tuwien.mnsa.geolocation.dto.ReportGeneratedEvent;
 import at.ac.tuwien.mnsa.geolocation.dto.ReportTemplate;
 import io.realm.Realm;
-import io.realm.Realm.Transaction;
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * <h4>About this class</h4>
@@ -26,11 +27,12 @@ public class PersistenceManager {
   }
 
   public void persistReport(ReportTemplate reportTemplate) {
+    final long reportId = System.currentTimeMillis();
     try (Realm realm = Realm.getInstance(Utils.Companion.getNormalRealmConfig())) {
       realm.executeTransaction(r -> {
         Report report = new Report();
 
-        report.setTimestamp(System.currentTimeMillis());
+        report.setTimestamp(reportId);
 
         report.setActualLatitude(reportTemplate.getGpsLocationInformation().getLatitude());
         report.setActualLongitude(reportTemplate.getGpsLocationInformation().getLongitude());
@@ -43,5 +45,6 @@ public class PersistenceManager {
         r.copyToRealmOrUpdate(report);
       });
     }
+    EventBus.getDefault().post(new ReportGeneratedEvent(reportId));
   }
 }
