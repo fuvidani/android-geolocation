@@ -79,3 +79,5 @@ open class LocationServiceKey(
 ) : RealmObject()
 
 data class ReportDetailClickEvent(val reportId: Long)
+
+data class ReportDeleteClickEvent(val reportId: Long)

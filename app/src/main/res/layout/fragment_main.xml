@@ -5,15 +5,11 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent">
 
-  <LinearLayout
-    android:id="@+id/linearLayout"
-  android:orientation="vertical"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent">
-
     <android.support.design.widget.AppBarLayout
+      android:id="@+id/appBar"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content">
+      android:layout_height="wrap_content"
+      android:theme="@style/AppTheme.AppBarOverlay">
 
       <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -25,16 +21,30 @@
         android:theme="@style/AppTheme.AppBarOverlay" />
     </android.support.design.widget.AppBarLayout>
 
-  <android.support.v7.widget.RecyclerView
-    android:id="@+id/recyclerView"
+  <LinearLayout
+    android:id="@+id/linearLayout"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="@dimen/md_keylines"
-    android:paddingBottom="@dimen/md_keylines"
-    android:scrollbars="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-  </android.support.v7.widget.RecyclerView>
+    <ProgressBar
+      android:id="@+id/progressBar"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:indeterminate="true"
+      android:indeterminateOnly="true"
+      android:visibility="gone"
+      style="?android:attr/progressBarStyleHorizontal" />
+
+    <android.support.v7.widget.RecyclerView
+      android:id="@+id/recyclerView"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:scrollbars="vertical"
+      app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    </android.support.v7.widget.RecyclerView>
 </LinearLayout>
 
   <android.support.design.widget.FloatingActionButton
@@ -44,6 +54,9 @@
     android:layout_margin="@dimen/fab_margin"
     app:srcCompat="@drawable/ic_add_white_24dp"
     app:fabSize="normal"
-    app:layout_anchor="@id/linearLayout"
-    app:layout_anchorGravity="bottom|right|end" />
+    android:clickable="true"
+    android:focusable="true"
+    app:layout_anchorGravity="bottom|right|end"
+    android:layout_gravity="bottom|end"
+    android:visibility="invisible" />
 </android.support.design.widget.CoordinatorLayout>

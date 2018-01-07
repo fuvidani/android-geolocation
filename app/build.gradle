@@ -55,6 +55,7 @@ dependencies {
     implementation "com.trello.rxlifecycle2:rxlifecycle:$rootProject.rxLifecycleVersion" // lifecycle
     implementation "com.trello.rxlifecycle2:rxlifecycle-android:$rootProject.rxLifecycleVersion"
     implementation "com.trello.rxlifecycle2:rxlifecycle-components:$rootProject.rxLifecycleVersion"
+    implementation "com.trello.rxlifecycle2:rxlifecycle-kotlin:$rootProject.rxLifecycleVersion"
     implementation "com.tbruyelle.rxpermissions2:rxpermissions:$rootProject.rxPermissionsVersion" // permissions
     implementation "pl.charmas.android:android-reactive-location2:$rootProject.rxLocationVersion"
 

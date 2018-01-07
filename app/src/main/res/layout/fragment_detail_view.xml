@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/coordinatorLayout"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+
+  <android.support.design.widget.AppBarLayout
+    android:id="@+id/appBar"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/app_bar_height"
+    android:fitsSystemWindows="true"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+    <android.support.design.widget.CollapsingToolbarLayout
+      android:id="@+id/collapsingToolbar"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:theme="@style/ThemeOverlay.AppCompat.Dark"
+      android:fitsSystemWindows="true"
+      app:contentScrim="?attr/colorPrimary"
+      app:expandedTitleMarginStart="@dimen/md_keylines"
+      app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+      <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/locationImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        app:layout_collapseMode="parallax"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/default_placeholder" />
+
+      <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:layout_alignBottom="@+id/locationImage"
+        android:background="@drawable/shape" />
+
+      <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:minHeight="?attr/actionBarSize"
+        app:layout_collapseMode="pin"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+    </android.support.design.widget.CollapsingToolbarLayout>
+  </android.support.design.widget.AppBarLayout>
+
+  <android.support.v4.widget.NestedScrollView
+    android:id="@+id/nestedScrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <LinearLayout
+      android:id="@+id/container"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:orientation="vertical"
+      android:padding="@dimen/md_keylines">
+
+      <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/keyInformationTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/article_titles"
+        android:text="@string/key_info_tv"
+        android:paddingTop="@dimen/md_keylines"
+        android:paddingBottom="@dimen/md_keylines" />
+
+      <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.AppCompatTextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:drawableStart="@drawable/ic_event_grey_50_24dp" />
+
+        <android.support.v7.widget.AppCompatTextView
+          android:id="@+id/report_time_tv"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="@dimen/detail_left_margin"
+          android:layout_marginEnd="@dimen/detail_right_margin"
+          android:textColor="@color/black"
+          android:textSize="@dimen/subheading"
+          tools:text="07. Januar 2018 15:18:42" />
+
+        <android.support.v7.widget.AppCompatTextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="@dimen/detail_left_margin"
+          android:layout_marginEnd="@dimen/detail_right_margin"
+          android:layout_below="@id/report_time_tv"
+          android:text="@string/detail_subscript_time" />
+      </RelativeLayout>
+
+      <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/md_keylines">
+
+        <android.support.v7.widget.AppCompatTextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:drawableStart="@drawable/ic_my_location_grey_50_24dp" />
+
+        <android.support.v7.widget.AppCompatTextView
+          android:id="@+id/report_gsp_location_tv"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="@dimen/detail_left_margin"
+          android:layout_marginEnd="@dimen/detail_right_margin"
+          android:textColor="@color/black"
+          android:textSize="@dimen/subheading"
+          tools:text="48,1699064 / 16,3425354353 (10,00m)" />
+
+        <android.support.v7.widget.AppCompatTextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="@dimen/detail_left_margin"
+          android:layout_marginEnd="@dimen/detail_right_margin"
+          android:layout_below="@id/report_gsp_location_tv"
+          android:text="@string/detail_subscript_actual_location" />
+      </RelativeLayout>
+
+      <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/md_keylines">
+
+        <android.support.v7.widget.AppCompatTextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:drawableStart="@drawable/ic_perm_scan_wifi_grey_50_24dp" />
+
+        <android.support.v7.widget.AppCompatTextView
+          android:id="@+id/report_measured_location_tv"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="@dimen/detail_left_margin"
+          android:layout_marginEnd="@dimen/detail_right_margin"
+          android:textColor="@color/black"
+          android:textSize="@dimen/subheading"
+          tools:text="48,1699064 / 16,3425354353 (5,00m)" />
+
+        <android.support.v7.widget.AppCompatTextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="@dimen/detail_left_margin"
+          android:layout_marginEnd="@dimen/detail_right_margin"
+          android:layout_below="@id/report_measured_location_tv"
+          android:text="@string/detail_subscript_measured_location" />
+      </RelativeLayout>
+
+      <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/md_keylines">
+
+        <android.support.v7.widget.AppCompatTextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:drawableStart="@drawable/ic_timeline_grey_50_24dp" />
+
+        <android.support.v7.widget.AppCompatTextView
+          android:id="@+id/report_acc_diff_tv"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="@dimen/detail_left_margin"
+          android:layout_marginEnd="@dimen/detail_right_margin"
+          android:textColor="@color/black"
+          android:textSize="@dimen/subheading"
+          tools:text="34,123m" />
+
+        <android.support.v7.widget.AppCompatTextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="@dimen/detail_left_margin"
+          android:layout_marginEnd="@dimen/detail_right_margin"
+          android:layout_below="@id/report_acc_diff_tv"
+          android:text="@string/detail_subscript_acc_diff" />
+      </RelativeLayout>
+
+      <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/md_keylines"
+        android:background="@color/light_grey" />
+
+      <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/cellTowersTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/article_titles"
+        android:text="@string/cell_towers_tv"
+        android:paddingTop="@dimen/md_keylines"
+        android:paddingBottom="@dimen/md_keylines" />
+
+      <android.support.v7.widget.RecyclerView
+        android:id="@+id/towersRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+      </android.support.v7.widget.RecyclerView>
+
+      <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/md_keylines"
+        android:background="@color/light_grey" />
+
+      <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/accessPointsTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/article_titles"
+        android:text="@string/access_points_tv"
+        android:paddingTop="@dimen/md_keylines"
+        android:paddingBottom="@dimen/md_keylines" />
+
+      <android.support.v7.widget.RecyclerView
+        android:id="@+id/accessPointsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+      </android.support.v7.widget.RecyclerView>
+
+      <android.support.v7.widget.AppCompatButton
+        android:id="@+id/deleteReportButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        app:backgroundTint="@color/colorAccent"
+        android:text="@string/delete_report" />
+    </LinearLayout>
+
+  </android.support.v4.widget.NestedScrollView>
+
+
+  <android.support.design.widget.FloatingActionButton
+    android:id="@+id/fab_send_report"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/fab_margin"
+    app:srcCompat="@drawable/ic_send_white_24dp"
+    android:clickable="true"
+    android:focusable="true"
+    app:fabSize="normal"
+    app:layout_anchor="@id/appBar"
+    app:layout_anchorGravity="bottom|right|end" />
+</android.support.design.widget.CoordinatorLayout>
