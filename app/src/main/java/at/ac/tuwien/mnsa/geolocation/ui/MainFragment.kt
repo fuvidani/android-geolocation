@@ -135,7 +135,6 @@ class MainFragment : Fragment() {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    @SuppressWarnings("unused")
     fun onDeleteReport(event: ReportDeleteClickEvent) {
         val reportId = event.reportId
         alertDialog = AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle)
