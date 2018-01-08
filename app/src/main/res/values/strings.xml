@@ -28,4 +28,13 @@
   <string name="detail_subscript_acc_diff">Position difference</string>
   <string name="accuracy_difference">%1$s m</string>
   <string name="generation_error">Error: Report could not be generated</string>
+  <string name="column_cellId">ID</string>
+  <string name="column_cellType">Type</string>
+  <string name="column_countryCode">CC</string>
+  <string name="column_networkId">NID</string>
+  <string name="column_location_area_code">LAC</string>
+  <string name="column_strength">Str</string>
+  <string name="column_strength_full">Strength</string>
+  <string name="column_address">Address</string>
+  <string name="column_frequency">Frequency</string>
 </resources>

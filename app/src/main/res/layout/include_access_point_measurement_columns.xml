@@ -1,40 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:tools="http://schemas.android.com/tools"
+  android:orientation="horizontal"
   android:layout_width="match_parent"
-  android:layout_height="wrap_content"
+  android:layout_height="match_parent"
   android:paddingStart="@dimen/md_keylines"
   android:paddingEnd="@dimen/md_keylines"
-  android:paddingBottom="@dimen/md_keylines"
-  android:orientation="horizontal">
+  android:paddingBottom="@dimen/md_keylines">
 
   <android.support.v7.widget.AppCompatTextView
-    android:id="@+id/addressTv"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_weight="2"
     android:textAlignment="gravity"
     android:gravity="start"
-    android:textColor="@color/black_85"
-    tools:text="00:80:41:ae:fd:7e" />
+    android:text="@string/column_address" />
 
   <android.support.v7.widget.AppCompatTextView
-    android:id="@+id/frequencyTv"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_weight="1"
     android:textAlignment="gravity"
     android:gravity="end"
-    android:textColor="@color/black_85"
-    tools:text="100" />
+    android:text="@string/column_frequency" />
 
   <android.support.v7.widget.AppCompatTextView
-    android:id="@+id/strengthTv"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_weight="1"
     android:textAlignment="gravity"
     android:gravity="end"
-    android:textColor="@color/black_85"
-    tools:text="100" />
+    android:text="@string/column_strength" />
+
+
 </LinearLayout>

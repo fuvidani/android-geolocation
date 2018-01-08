@@ -95,13 +95,13 @@ class DetailViewFragment : Fragment() {
     private fun setUpTowerRecyclerView() {
         towersRecyclerView.layoutManager = LinearLayoutManager(context)
         towersRecyclerView.setHasFixedSize(true)
-        towersRecyclerView.adapter = CellTowersAdapter(context, report.towerMeasurements)
+        towersRecyclerView.adapter = CellTowersAdapter(report.towerMeasurements)
     }
 
     private fun setUpAccessPointsRecyclerView() {
         accessPointsRecyclerView.layoutManager = LinearLayoutManager(context)
         accessPointsRecyclerView.setHasFixedSize(true)
-        accessPointsRecyclerView.adapter = AccessPointsAdapter(context, report.pointMeasurements)
+        accessPointsRecyclerView.adapter = AccessPointsAdapter(report.pointMeasurements)
     }
 
     private fun onSendReport(view: View) {
