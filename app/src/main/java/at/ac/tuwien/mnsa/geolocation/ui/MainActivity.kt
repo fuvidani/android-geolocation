@@ -7,10 +7,8 @@ import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
-import at.ac.tuwien.mnsa.geolocation.GeoLocationApp
 import at.ac.tuwien.mnsa.geolocation.R
 import at.ac.tuwien.mnsa.geolocation.Utils
-import at.ac.tuwien.mnsa.geolocation.di.ApplicationComponent
 import at.ac.tuwien.mnsa.geolocation.dto.ReportDetailClickEvent
 import io.realm.Realm
 import org.greenrobot.eventbus.EventBus
@@ -20,14 +18,12 @@ import org.greenrobot.eventbus.ThreadMode
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var applicationComponent: ApplicationComponent
     private var alertDialog: AlertDialog? = null
     lateinit var realm: Realm
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        applicationComponent = (application as GeoLocationApp).getApplicationComponent()
         realm = Realm.getInstance(Utils.getNormalRealmConfig())
         EventBus.getDefault().register(this)
         setUpViewFragment()
@@ -74,12 +70,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun getComponent(): ApplicationComponent {
-        return applicationComponent
-    }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
-    @SuppressWarnings("unused")
     fun onEvent(reportClick: ReportDetailClickEvent) {
         val bundle = Bundle()
         bundle.putLong("reportId", reportClick.reportId)

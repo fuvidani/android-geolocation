@@ -102,12 +102,11 @@ class MainFragment : Fragment() {
 
     private fun observeFabClick(view: View) {
         RxView.clicks(fab_add_report)
-                .throttleFirst(1, TimeUnit.SECONDS)
+                .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .bindToLifecycle(view)
                 .map { setLoading(true) }
                 .delay(1, TimeUnit.SECONDS)
-                .map { context.startService(Intent(context, ReportService::class.java)) }
-                .subscribe()
+                .subscribe({ context.startService(Intent(context, ReportService::class.java)) })
     }
 
     private fun setLoading(isLoading: Boolean) {
