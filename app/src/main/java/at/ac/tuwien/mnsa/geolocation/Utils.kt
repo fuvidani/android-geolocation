@@ -49,7 +49,7 @@ class Utils {
         }
 
         fun getStreetViewUrl(width: Int, height: Int, lat: Double, lon: Double): String {
-            return "https://maps.googleapis.com/maps/api/streetview?size=${width}x$height&location=$lat,$lon&fov=90"
+            return "https://maps.googleapis.com/maps/api/staticmap?center=$lat,$lon&zoom=18&size=${width}x$height&markers=$lat,$lon"
         }
 
         fun toReadableFormat(timestamp: Long): String {
