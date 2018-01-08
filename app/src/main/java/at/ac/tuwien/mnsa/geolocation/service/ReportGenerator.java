@@ -45,7 +45,8 @@ public class ReportGenerator {
     Observable<MLSLocationInformation> mlsLocationInformationObservable = getMLSLocation();
     Observable<Location> gpsLocationInformationObservable = getGPSLocation();
 
-    return Observable.zip(mlsLocationInformationObservable, gpsLocationInformationObservable, ReportDraft::new);
+    return Observable
+        .zip(mlsLocationInformationObservable, gpsLocationInformationObservable, ReportDraft::new);
   }
 
   private Observable<List<ScanResult>> getWifiInformation() {

@@ -85,9 +85,9 @@ class DetailViewFragment : Fragment() {
                 .error(R.drawable.default_placeholder)
                 .into(locationImage)
         report_time_tv.text = Utils.toReadableFormat(report.timestamp)
-        report_gsp_location_tv.text = String.format(getString(R.string.location_formatted), report.actualLatitude, report.actualLongitude, report.gspAccuracy)
-        report_measured_location_tv.text = String.format(getString(R.string.location_formatted), report.assumedLatitude, report.assumedLongitude, report.assumedAccuracy)
-        report_acc_diff_tv.text = String.format(getString(R.string.accuracy_difference), report.accuracyDifference)
+        report_gsp_location_tv.text = String.format(getString(R.string.location_formatted), report.actualLatitude, report.actualLongitude, Utils.roundDouble(report.gspAccuracy))
+        report_measured_location_tv.text = String.format(getString(R.string.location_formatted), report.assumedLatitude, report.assumedLongitude, Utils.roundDouble(report.assumedAccuracy))
+        report_acc_diff_tv.text = String.format(getString(R.string.accuracy_difference), Utils.roundDouble(report.positionDifference))
         setUpTowerRecyclerView()
         setUpAccessPointsRecyclerView()
     }

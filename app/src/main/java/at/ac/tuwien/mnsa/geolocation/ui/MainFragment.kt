@@ -1,5 +1,6 @@
 package at.ac.tuwien.mnsa.geolocation.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
@@ -10,14 +11,12 @@ import android.support.v7.widget.RecyclerView
 import android.view.*
 import at.ac.tuwien.mnsa.geolocation.R
 import at.ac.tuwien.mnsa.geolocation.Utils
-import at.ac.tuwien.mnsa.geolocation.dto.Report
-import at.ac.tuwien.mnsa.geolocation.dto.ReportDeleteClickEvent
-import at.ac.tuwien.mnsa.geolocation.dto.ReportDetailClickEvent
+import at.ac.tuwien.mnsa.geolocation.dto.*
+import at.ac.tuwien.mnsa.geolocation.service.ReportService
 import at.ac.tuwien.mnsa.geolocation.ui.recyclerviews.ReportsAdapter
 import com.jakewharton.rxbinding2.view.RxView
 import com.trello.rxlifecycle2.kotlin.bindToLifecycle
 import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import io.realm.Realm
@@ -28,8 +27,6 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.util.concurrent.TimeUnit
-import android.content.Intent
-import at.ac.tuwien.mnsa.geolocation.service.ReportService
 
 
 /**
@@ -64,8 +61,7 @@ class MainFragment : Fragment() {
         setUpToolbar()
         fab_add_report.show()
         setUpRecyclerView()
-//        observeFabClicks(view)
-        initButton(view)
+        observeFabClick(view)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -89,7 +85,7 @@ class MainFragment : Fragment() {
         adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                 super.onItemRangeInserted(positionStart, itemCount)
-                layoutManager.smoothScrollToPosition(recyclerView, null, 0)
+                layoutManager.scrollToPosition(0)
             }
         })
         recyclerView.adapter = adapter
@@ -104,62 +100,41 @@ class MainFragment : Fragment() {
         disposable?.dispose()
     }
 
-    private fun generateReport() {
-        val intent = Intent(activity, ReportService::class.java)
-        activity.startService(intent)
-    }
-
-    private fun initButton(view: View) {
+    private fun observeFabClick(view: View) {
         RxView.clicks(fab_add_report)
                 .throttleFirst(1, TimeUnit.SECONDS)
                 .bindToLifecycle(view)
-                .map {
-                    generateReport()
-                }
+                .map { setLoading(true) }
+                .delay(1, TimeUnit.SECONDS)
+                .map { context.startService(Intent(context, ReportService::class.java)) }
                 .subscribe()
     }
 
-    private fun observeFabClicks(view: View) {
-        RxView.clicks(fab_add_report)
-                .throttleFirst(1, TimeUnit.SECONDS)
-                .bindToLifecycle(view)
-                .map {
-                    progressBar.visibility = View.VISIBLE
-                    fab_add_report.hide()
-                }
-                .switchMap {
-                    Observable
-                            .timer(3000, TimeUnit.MILLISECONDS)
-                            .bindToLifecycle(view)
-                            .map {
-                                var reportId = 0L
-                                Realm.getInstance(Utils.getNormalRealmConfig()).use {
-                                    it.executeTransaction { realm ->
-                                        val report = Utils.generateDummyReport()
-                                        reportId = report.timestamp
-                                        realm.copyToRealmOrUpdate(report)
-                                    }
-                                }
-                                reportId
-                            }
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .map { aLong ->
-                                progressBar.visibility = View.GONE
-                                fab_add_report.show()
-                                showInsertSnackbar(aLong)
-                            }
-                }
-                .subscribe()
+    private fun setLoading(isLoading: Boolean) {
+        if (isLoading) {
+            progressBar.visibility = View.VISIBLE
+            fab_add_report.hide()
+        } else {
+            progressBar.visibility = View.GONE
+            fab_add_report.show()
+        }
     }
 
-    private fun showInsertSnackbar(reportId: Long) {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onNewReport(event: ReportGeneratedEvent) {
+        setLoading(false)
         Snackbar.make(fab_add_report, R.string.new_report_snackbar_msg, Snackbar.LENGTH_LONG)
-                .setAction(R.string.new_report_snackbar_action, { EventBus.getDefault().post(ReportDetailClickEvent(reportId)) })
+                .setAction(R.string.new_report_snackbar_action, { EventBus.getDefault().post(ReportDetailClickEvent(event.reportId)) })
                 .show()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    @SuppressWarnings("unused")
+    fun onGenerationError(event: ReportGenerationError) {
+        setLoading(false)
+        Snackbar.make(fab_add_report, R.string.generation_error, Snackbar.LENGTH_LONG).show()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     fun onDeleteReport(event: ReportDeleteClickEvent) {
         val reportId = event.reportId
         alertDialog = AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle)

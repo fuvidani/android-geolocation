@@ -46,7 +46,7 @@ class ReportsAdapter(
                     .into(holder.itemView.cardImage)
             holder.itemView.details_button.setOnClickListener { EventBus.getDefault().post(ReportDetailClickEvent(report.timestamp)) }
             holder.itemView.delete_button.setOnClickListener { EventBus.getDefault().post(ReportDeleteClickEvent(report.timestamp)) }
-            holder.itemView.measurementAccuracyDifferenceTv.text = String.format(context.getString(R.string.overview_card_text), report.accuracyDifference.toString())
+            holder.itemView.measurementAccuracyDifferenceTv.text = String.format(context.getString(R.string.overview_card_text), Utils.roundDouble(report.positionDifference))
             holder.itemView.cardTitle.text = Utils.toReadableFormat(report.timestamp)
         }
     }

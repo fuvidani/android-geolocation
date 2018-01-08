@@ -71,7 +71,7 @@ open class Report(
         var assumedLatitude: Double = 0.0,
         var assumedLongitude: Double = 0.0,
         var assumedAccuracy: Double = 0.0,
-        var accuracyDifference: Double = 0.0,
+        var positionDifference: Double = 0.0,
         var towerMeasurements: RealmList<CellTowerMeasurement> = RealmList(),
         var pointMeasurements: RealmList<AccessPointMeasurement> = RealmList()
 ) : RealmObject()
@@ -83,3 +83,7 @@ open class LocationServiceKey(
 data class ReportDetailClickEvent(val reportId: Long)
 
 data class ReportDeleteClickEvent(val reportId: Long)
+
+data class ReportGeneratedEvent(val reportId: Long)
+
+data class ReportGenerationError(val throwable: Throwable)
