@@ -1,7 +1,10 @@
 package at.ac.tuwien.mnsa.geolocation.ui
 
+import android.net.Uri
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
+import android.support.v4.app.ShareCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -13,9 +16,12 @@ import android.view.ViewGroup
 import at.ac.tuwien.mnsa.geolocation.R
 import at.ac.tuwien.mnsa.geolocation.Utils
 import at.ac.tuwien.mnsa.geolocation.dto.Report
+import at.ac.tuwien.mnsa.geolocation.service.ReportFileHandler
 import at.ac.tuwien.mnsa.geolocation.ui.recyclerviews.AccessPointsAdapter
 import at.ac.tuwien.mnsa.geolocation.ui.recyclerviews.CellTowersAdapter
+import com.jakewharton.rxbinding2.view.RxView
 import com.squareup.picasso.Picasso
+import com.trello.rxlifecycle2.kotlin.bindToLifecycle
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -24,6 +30,8 @@ import io.realm.Realm
 import io.realm.kotlin.where
 import kotlinx.android.synthetic.main.fragment_detail_view.*
 import timber.log.Timber
+import java.io.File
+import java.util.concurrent.TimeUnit
 
 /**
  * <h4>About this class</h4>
@@ -37,6 +45,7 @@ import timber.log.Timber
 class DetailViewFragment : Fragment() {
 
     private lateinit var report: Report
+    private val fileHandler = ReportFileHandler()
     private var alertDialog: AlertDialog? = null
     private var disposable: Disposable? = null
 
@@ -52,7 +61,8 @@ class DetailViewFragment : Fragment() {
         val reportId: Long? = arguments?.getLong("reportId")
         val r = realm.where<Report>().equalTo("timestamp", reportId).findFirst()
         if (r != null) {
-            report = r
+            // better use an un-managed copy so we can move the object across threads
+            report = realm.copyFromRealm(r)
         }
     }
 
@@ -74,7 +84,7 @@ class DetailViewFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         displayReport()
         deleteReportButton.setOnClickListener { onDeleteReport(report.timestamp) }
-        fab_send_report.setOnClickListener { aView -> onSendReport(aView) }
+        observeSendButton(view)
     }
 
     private fun displayReport() {
@@ -104,8 +114,22 @@ class DetailViewFragment : Fragment() {
         accessPointsRecyclerView.adapter = AccessPointsAdapter(report.pointMeasurements)
     }
 
-    private fun onSendReport(view: View) {
-        Timber.d("Sending report as e-mail attachment")
+    private fun observeSendButton(view: View) {
+        RxView.clicks(fab_send_report)
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
+                .bindToLifecycle(view)
+                .flatMapSingle { fileHandler.getFile(context, report).subscribeOn(Schedulers.io()) }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ file -> startAppChooser(file) },
+                        { Snackbar.make(view, R.string.file_access_error, Snackbar.LENGTH_LONG).show() })
+    }
+
+    private fun startAppChooser(file: File) {
+        ShareCompat.IntentBuilder
+                .from(activity)
+                .setType("message/rfc822")
+                .setStream(Uri.fromFile(file))
+                .startChooser()
     }
 
     private fun onDeleteReport(reportId: Long) {
@@ -149,5 +173,10 @@ class DetailViewFragment : Fragment() {
         super.onDestroyView()
         alertDialog?.dismiss()
         disposable?.dispose()
+        fileHandler.deleteReportFileIfAvailable(context, report)
+                .subscribeOn(AndroidSchedulers.mainThread()) // don't push it onto a background thread to avoid possible leak
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ _ -> Timber.d("Temp report deleted") },
+                        { _ -> Timber.d("No temp report or could not be deleted") })
     }
 }

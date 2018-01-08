@@ -37,4 +37,5 @@
   <string name="column_strength_full">Strength</string>
   <string name="column_address">Address</string>
   <string name="column_frequency">Frequency</string>
+  <string name="file_access_error">Could not create temporary file</string>
 </resources>
