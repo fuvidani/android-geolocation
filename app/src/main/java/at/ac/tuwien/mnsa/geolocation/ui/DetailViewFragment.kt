@@ -55,21 +55,11 @@ class DetailViewFragment : Fragment() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val realm = (activity as MainActivity).realm
-        val reportId: Long? = arguments?.getLong("reportId")
-        val r = realm.where<Report>().equalTo("timestamp", reportId).findFirst()
-        if (r != null) {
-            // better use an un-managed copy so we can move the object across threads
-            report = realm.copyFromRealm(r)
-        }
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_detail_view, container, false)
         setHasOptionsMenu(true)
         setUpToolbar(view)
+        loadReport()
         return view
     }
 
@@ -78,6 +68,15 @@ class DetailViewFragment : Fragment() {
         toolBar.title = getString(R.string.details_title)
         (activity as AppCompatActivity).setSupportActionBar(toolBar)
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    private fun loadReport() {
+        val realm = (activity as MainActivity).realm
+        val reportId: Long? = arguments?.getLong("reportId")
+        val r = realm.where<Report>().equalTo("timestamp", reportId).findFirst()
+        if (r != null) {
+            report = realm.copyFromRealm(r)// better use an un-managed copy so we can move the object across threads
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -116,8 +115,8 @@ class DetailViewFragment : Fragment() {
 
     private fun observeSendButton(view: View) {
         RxView.clicks(fab_send_report)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
                 .bindToLifecycle(view)
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
                 .flatMapSingle { fileHandler.getFile(context, report).subscribeOn(Schedulers.io()) }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ file -> startAppChooser(file) },
