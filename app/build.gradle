@@ -33,6 +33,7 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 
+    /*****************    Support Libraries    *****************/
     implementation "com.android.support:appcompat-v7:$supportLibraryVersion"
     implementation "com.android.support:design:$supportLibraryVersion"
     implementation "com.android.support.constraint:constraint-layout:$constraintLayoutVersion"
@@ -61,10 +62,12 @@ dependencies {
     implementation "com.jakewharton.timber:timber:$rootProject.timberVersion"
 
     /*****************  Networking    *****************/
+    implementation "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofitVersion"
     implementation "com.squareup.retrofit2:converter-scalars:$rootProject.retrofitVersion"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-jackson:$retrofitJacksonConverterVersion"
     implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okHttpVersion"
     implementation "com.squareup.okhttp3:okhttp:$rootProject.okHttpVersion"
 
@@ -72,15 +75,11 @@ dependencies {
     implementation "io.realm:android-adapters:$realmAdaptersVersion"
     implementation "com.squareup.picasso:picasso:$picassoVersion"
     implementation "org.greenrobot:eventbus:$eventBusVersion"
-    implementation "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
-    implementation "com.squareup.retrofit2:converter-jackson:$retrofitJacksonConverterVersion"
     implementation "com.jakewharton.fliptables:fliptables:$rootProject.flipTablesVeriosn"
-
 
     /*****************  Google Play    *****************/
     implementation "com.google.android.gms:play-services-location:$rootProject.playServicesVersion"
-
-
+    
     // Test helpers for Room
     testImplementation "android.arch.persistence.room:testing:1.0.0"
     testImplementation 'junit:junit:4.12'
