@@ -20,6 +20,7 @@ import java.util.*
 class Utils {
 
     companion object {
+        // TODO remove this method -> inject realm object by using persistence module
         fun getNormalRealmConfig(): RealmConfiguration {
             return RealmConfiguration.Builder().deleteRealmIfMigrationNeeded().build()
         }
