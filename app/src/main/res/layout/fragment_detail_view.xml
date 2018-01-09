@@ -61,7 +61,8 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:orientation="vertical"
-      android:padding="@dimen/md_keylines">
+      android:padding="@dimen/md_keylines"
+      android:descendantFocusability="blocksDescendants">
 
       <android.support.v7.widget.AppCompatTextView
         android:id="@+id/keyInformationTitle"
@@ -87,7 +88,7 @@
           android:layout_height="wrap_content"
           android:layout_marginStart="@dimen/detail_left_margin"
           android:layout_marginEnd="@dimen/detail_right_margin"
-          android:textColor="@color/black"
+          android:textColor="@color/black_85"
           android:textSize="@dimen/subheading"
           tools:text="07. Januar 2018 15:18:42" />
 
@@ -116,7 +117,7 @@
           android:layout_height="wrap_content"
           android:layout_marginStart="@dimen/detail_left_margin"
           android:layout_marginEnd="@dimen/detail_right_margin"
-          android:textColor="@color/black"
+          android:textColor="@color/black_85"
           android:textSize="@dimen/subheading"
           tools:text="48,1699064 / 16,3425354353 (10,00m)" />
 
@@ -145,7 +146,7 @@
           android:layout_height="wrap_content"
           android:layout_marginStart="@dimen/detail_left_margin"
           android:layout_marginEnd="@dimen/detail_right_margin"
-          android:textColor="@color/black"
+          android:textColor="@color/black_85"
           android:textSize="@dimen/subheading"
           tools:text="48,1699064 / 16,3425354353 (5,00m)" />
 
@@ -174,7 +175,7 @@
           android:layout_height="wrap_content"
           android:layout_marginStart="@dimen/detail_left_margin"
           android:layout_marginEnd="@dimen/detail_right_margin"
-          android:textColor="@color/black"
+          android:textColor="@color/black_85"
           android:textSize="@dimen/subheading"
           tools:text="34,123m" />
 
@@ -202,10 +203,12 @@
         android:paddingTop="@dimen/md_keylines"
         android:paddingBottom="@dimen/md_keylines" />
 
+      <include layout="@layout/include_tower_measurement_columns" />
+
       <android.support.v7.widget.RecyclerView
         android:id="@+id/towersRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:scrollbars="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -226,10 +229,12 @@
         android:paddingTop="@dimen/md_keylines"
         android:paddingBottom="@dimen/md_keylines" />
 
+      <include layout="@layout/include_access_point_measurement_columns" />
+
       <android.support.v7.widget.RecyclerView
         android:id="@+id/accessPointsRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:scrollbars="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -239,8 +244,10 @@
         android:id="@+id/deleteReportButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/md_keylines"
         android:textColor="@color/white"
         app:backgroundTint="@color/colorAccent"
+        android:layout_gravity="center"
         android:text="@string/delete_report" />
     </LinearLayout>
 

@@ -15,5 +15,6 @@
   <dimen name="detail_right_margin">32dp</dimen>
   <dimen name="detail_subscript">12sp</dimen>
   <dimen name="subheading">16sp</dimen>
-  <string name="default_body">14sp</string>
+  <dimen name="default_body">14sp</dimen>
+  <dimen name="detail_list_height">200dp</dimen>
 </resources>

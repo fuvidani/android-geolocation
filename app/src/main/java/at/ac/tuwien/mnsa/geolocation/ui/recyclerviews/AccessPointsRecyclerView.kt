@@ -1,12 +1,12 @@
 package at.ac.tuwien.mnsa.geolocation.ui.recyclerviews
 
-import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import at.ac.tuwien.mnsa.geolocation.R
 import at.ac.tuwien.mnsa.geolocation.dto.AccessPointMeasurement
+import kotlinx.android.synthetic.main.access_point_measurement_entry.view.*
 
 /**
  * <h4>About this class</h4>
@@ -17,8 +17,7 @@ import at.ac.tuwien.mnsa.geolocation.dto.AccessPointMeasurement
  * @since 0.1.0
  * @version 0.1.0
  */
-class AccessPointsAdapter(private val context: Context,
-                          private val accessPointsMeasurements: List<AccessPointMeasurement>)
+class AccessPointsAdapter(private val accessPointsMeasurements: List<AccessPointMeasurement>)
     : RecyclerView.Adapter<AccessPointViewHolder>() {
 
     override fun getItemCount(): Int {
@@ -30,10 +29,12 @@ class AccessPointsAdapter(private val context: Context,
         return AccessPointViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: AccessPointViewHolder?, position: Int) {
-
+    override fun onBindViewHolder(holder: AccessPointViewHolder, position: Int) {
+        val accessPoint = accessPointsMeasurements[position % itemCount]
+        holder.itemView.addressTv.text = accessPoint.address
+        holder.itemView.strengthTv.text = accessPoint.strength.toString()
+        holder.itemView.frequencyTv.text = accessPoint.frequency.toString()
     }
 }
 
-
-class AccessPointViewHolder(private val view: View) : RecyclerView.ViewHolder(view)
+class AccessPointViewHolder(view: View) : RecyclerView.ViewHolder(view)
