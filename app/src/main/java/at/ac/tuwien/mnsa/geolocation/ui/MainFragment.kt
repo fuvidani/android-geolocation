@@ -1,5 +1,6 @@
 package at.ac.tuwien.mnsa.geolocation.ui
 
+import android.Manifest
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -15,6 +16,7 @@ import at.ac.tuwien.mnsa.geolocation.dto.*
 import at.ac.tuwien.mnsa.geolocation.service.ReportService
 import at.ac.tuwien.mnsa.geolocation.ui.recyclerviews.ReportsAdapter
 import com.jakewharton.rxbinding2.view.RxView
+import com.tbruyelle.rxpermissions2.RxPermissions
 import com.trello.rxlifecycle2.kotlin.bindToLifecycle
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
@@ -91,19 +93,13 @@ class MainFragment : Fragment() {
         recyclerView.adapter = adapter
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        fab_add_report.hide()
-        recyclerView.adapter = null
-        EventBus.getDefault().unregister(this)
-        alertDialog?.dismiss()
-        disposable?.dispose()
-    }
-
     private fun observeFabClick(view: View) {
         RxView.clicks(fab_add_report)
-                .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .bindToLifecycle(view)
+                .throttleFirst(300, TimeUnit.MILLISECONDS)
+                .compose(RxPermissions(activity).ensure<Any>(Manifest.permission.ACCESS_FINE_LOCATION))
+                .compose(RxPermissions(activity).ensure<Any>(Manifest.permission.ACCESS_COARSE_LOCATION))
+                .filter { granted -> granted }
                 .map { setLoading(true) }
                 .delay(1, TimeUnit.SECONDS)
                 .subscribe({ context.startService(Intent(context, ReportService::class.java)) })
@@ -158,5 +154,14 @@ class MainFragment : Fragment() {
                         })
                 .create()
         alertDialog?.show()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        fab_add_report.hide()
+        recyclerView.adapter = null // recommended by Realm
+        EventBus.getDefault().unregister(this)
+        alertDialog?.dismiss()
+        disposable?.dispose()
     }
 }

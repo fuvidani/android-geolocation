@@ -38,4 +38,10 @@
   <string name="column_address">Address</string>
   <string name="column_frequency">Frequency</string>
   <string name="file_access_error">Could not create temporary file</string>
+
+  <!-- Report txt template-->
+  <string name="txt_title">Geolocation report from %1$s</string>
+  <string name="txt_gps_loc">Device\'s GPS location: %1$s / %2$s (Accuracy: %3$s m)</string>
+  <string name="txt_meas_loc">Device\'s location based on network information : %1$s / %2$s (Accuracy: %3$s m)</string>
+  <string name="txt_diff">Difference between actual and determined location: %1$s m</string>
 </resources>
