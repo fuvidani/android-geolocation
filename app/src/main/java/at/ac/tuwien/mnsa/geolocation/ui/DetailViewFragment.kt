@@ -90,7 +90,7 @@ class DetailViewFragment : Fragment() {
     private fun displayReport() {
         Picasso
                 .with(context)
-                .load(Utils.getStreetViewUrl(600, 600, report.actualLatitude, report.actualLongitude))
+                .load(Utils.getStreetViewUrl(600, 600, report.actualLatitude, report.actualLongitude, report.assumedLatitude, report.assumedLongitude))
                 .placeholder(R.drawable.default_placeholder)
                 .error(R.drawable.default_placeholder)
                 .into(locationImage)

@@ -40,7 +40,7 @@ class ReportsAdapter(
             holder.reportId = report.timestamp
             Picasso
                     .with(context)
-                    .load(Utils.getStreetViewUrl(600, 300, report.actualLatitude, report.actualLongitude))
+                    .load(Utils.getStreetViewUrl(600, 300, report.actualLatitude, report.actualLongitude, report.assumedLatitude, report.assumedLongitude))
                     .placeholder(R.drawable.default_placeholder)
                     .error(R.drawable.default_placeholder)
                     .into(holder.itemView.cardImage)

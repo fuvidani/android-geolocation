@@ -31,7 +31,8 @@ public class WifiInformationRetriever {
 
   public Observable<List<ScanResult>> getInformation() {
     if (permissionGranted()) {
-      final WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+      final WifiManager wifiManager = (WifiManager) context.getApplicationContext()
+          .getSystemService(Context.WIFI_SERVICE);
 
       return Observable.defer(() -> Observable.just(wifiManager.getScanResults()));
     } else {

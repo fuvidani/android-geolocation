@@ -48,8 +48,8 @@ class Utils {
             return 43
         }
 
-        fun getStreetViewUrl(width: Int, height: Int, lat: Double, lon: Double): String {
-            return "https://maps.googleapis.com/maps/api/staticmap?center=$lat,$lon&zoom=18&size=${width}x$height&markers=$lat,$lon"
+        fun getStreetViewUrl(width: Int, height: Int, gpsLat: Double, gpsLon: Double, wifiLat: Double, wifiLon: Double): String {
+            return "https://maps.googleapis.com/maps/api/staticmap?center=$gpsLat,$gpsLon&zoom=18&size=${width}x$height&markers=label:G%7C$gpsLat,$gpsLon&markers=color:blue%7Clabel:W%7C$wifiLat,$wifiLon"
         }
 
         fun toReadableFormat(timestamp: Long): String {
