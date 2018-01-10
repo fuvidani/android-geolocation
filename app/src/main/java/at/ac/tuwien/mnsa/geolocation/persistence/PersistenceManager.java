@@ -41,7 +41,7 @@ public class PersistenceManager {
 
   public void persistReport(ReportDraft reportDraft) {
     final long reportId = System.currentTimeMillis();
-    try (Realm realm = getRealmDatabase(key)) {
+    try (Realm realm = Realm.getInstance(Utils.Companion.getNormalRealmConfig())) {
       realm.executeTransaction(r -> {
         Report report = new Report();
 

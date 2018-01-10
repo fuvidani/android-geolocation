@@ -1,6 +1,7 @@
 package at.ac.tuwien.mnsa.geolocation.service;
 
 import android.location.Location;
+import android.net.ParseException;
 import android.net.wifi.ScanResult;
 import at.ac.tuwien.mnsa.geolocation.dto.CellTower;
 import at.ac.tuwien.mnsa.geolocation.dto.MLSLocationInformation;
@@ -13,6 +14,7 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import java.util.ArrayList;
 import java.util.List;
+import timber.log.Timber;
 
 /**
  * <h4>About this class</h4>
@@ -81,15 +83,19 @@ public class ReportGenerator {
       }
 
       for (CellTower cellTower: networkInformation.getCellInformation()) {
-        RemoteMLSCellTower mlsCellTower = new RemoteMLSCellTower();
-        mlsCellTower.radioType = cellTower.getCellType().name().toLowerCase();
-        mlsCellTower.mobileCountryCode = Long.parseLong(cellTower.getCountryCode());
-        mlsCellTower.mobileNetworkCode = Long.parseLong(cellTower.getNetworkId());
-        mlsCellTower.locationAreaCode = Long.parseLong(cellTower.getLocationAreaCode());
-        mlsCellTower.cellId = Long.parseLong(cellTower.getCellId());
-        mlsCellTower.signalStrength = cellTower.getSignalStrengthAsDbm();
+        try {
+          RemoteMLSCellTower mlsCellTower = new RemoteMLSCellTower();
+          mlsCellTower.radioType = cellTower.getCellType().name().toLowerCase();
+          mlsCellTower.mobileCountryCode = Long.parseLong(cellTower.getCountryCode());
+          mlsCellTower.mobileNetworkCode = Long.parseLong(cellTower.getNetworkId());
+          mlsCellTower.locationAreaCode = Long.parseLong(cellTower.getLocationAreaCode());
+          mlsCellTower.cellId = Long.parseLong(cellTower.getCellId());
+          mlsCellTower.signalStrength = cellTower.getSignalStrengthAsDbm();
 
-        cellTowers.add(mlsCellTower);
+          cellTowers.add(mlsCellTower);
+        } catch (NumberFormatException e) {
+          Timber.e("Error while parsing");
+        }
       }
 
       request.wifiAccessPoints = wifiAccessPoints;
